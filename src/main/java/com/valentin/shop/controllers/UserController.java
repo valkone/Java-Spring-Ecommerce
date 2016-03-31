@@ -32,7 +32,7 @@ public class UserController {
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(Model model, @ModelAttribute("registration") RegisterDto registrationModel) throws Exception {
-		Status status = userService.register(registrationModel);
+		Status status = this.userService.register(registrationModel);
 		
 		model.addAttribute("username", HtmlUtils.htmlEscape(registrationModel.getUsername()));
 		model.addAttribute("email", HtmlUtils.htmlEscape(registrationModel.getEmail()));

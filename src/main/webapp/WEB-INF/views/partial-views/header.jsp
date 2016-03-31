@@ -1,3 +1,6 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<sec:authentication var="user" property="principal" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,15 +13,23 @@
 	<div class="wrapper">
         <div id="header">
             <div id="top-menu">
-                <div id="left-top-menu">
-                    <tab>Welcome <span>Guest</span></tab>
-                    <tab>Currency: <span>USD</span></tab>
-                    <tab>Language: <span>English</span></tab>
-                </div>
+            	<sec:authorize access="isAuthenticated()">
+	                <div id="left-top-menu">
+	                    <tab>Welcome <span>${user.username}</span></tab>
+	                    <tab>Language: <span>English</span></tab>
+	                </div>
+                </sec:authorize>
                 <div id="right-top-menu">
-                    <ul>
-                        <li><tab><a href="login">Login</a></tab></li>                        
-                        <li><tab><a href="register">Register</a></tab></li>
+                	<ul>
+                		<sec:authorize access="isAnonymous()">
+	                		<li><tab><a href="login">Login</a></tab></li>                        
+                        	<li><tab><a href="register">Register</a></tab></li>
+                		</sec:authorize>
+                    	<sec:authorize access="isAuthenticated()">
+	                		<li><tab><a href="myProducts">My Products</a></tab></li>
+	                		<li><tab><a href="logout">Logout</a></tab></li>    
+                    	</sec:authorize>
+                        
                         
                     </ul>
                 </div>

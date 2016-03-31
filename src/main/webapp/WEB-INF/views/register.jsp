@@ -15,6 +15,11 @@
 							</c:forEach>
 						</div><br />
 					</c:if>
+					<c:if test="${status.isSuccess()}">
+						<div class="success">
+							${status.getSuccessMessage()}
+						</div>
+					</c:if>
                 
 					<form method="post" ModelAttribute="registration">
 						<p>Username:</p> <input type="text" value="${username}" name="username" class="customInput" /> 

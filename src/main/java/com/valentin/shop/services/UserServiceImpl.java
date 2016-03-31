@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import com.valentin.shop.entities.User;
 import com.valentin.shop.interfaces.UserDao;
@@ -22,6 +23,7 @@ public class UserServiceImpl implements UserService {
 	private ModelMapper modelMapper;
 
 	@Override
+	@Secured("isAnonymous()")
 	public Status register(RegisterDto model) {
 		Status status = new Status();
 
@@ -47,7 +49,7 @@ public class UserServiceImpl implements UserService {
 		}
 
 		if (status.isSuccess()) {
-			User user = modelMapper.map(model, User.class);
+			User user = this.modelMapper.map(model, User.class);
 			// TODO: make password with BCrypt
 			/*
 			 * BCryptPasswordEncoder passwordEncoder = new

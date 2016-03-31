@@ -463,3 +463,11 @@ form p {
 #search-button:hover {
     background-color: #FF6D00;
 }
+
+.table, td, tr, th {
+	border: 1px solid #fff;
+}
+
+td, tr, th {
+	padding: 5px 10px;
+}

@@ -16,7 +16,6 @@ import com.valentin.shop.entities.User;
 import com.valentin.shop.interfaces.UserDao;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
-
 	
 	@Autowired
 	private UserDao userDao;
