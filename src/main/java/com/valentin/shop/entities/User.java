@@ -1,9 +1,12 @@
 package com.valentin.shop.entities;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -15,36 +18,63 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "USERS")
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
 
 	@Id
+	@Column(name = "ID")
 	private long id;
+	
+	@Column(name = "USERNAME")
 	private String username;
+	
+	@Column(name = "PASSWORD")
 	private String password;
+	
+	@Column(name = "EMAIL")
 	private String email;
-	private static final long serialVersionUID = 1;
+	
+	@Column(name = "ACCOUNTNONEXPIRED")
 	private boolean accountNonExpired;
+	
+	@Column(name = "ACCOUNTNONLOCKED")
 	private boolean accountNonLocked;
+	
+	@Column(name = "CREDENTIALSNONEXPIRED")
 	private boolean credentialsNonExpired;
+	
+	@Column(name = "ENABLED")
 	private boolean enabled;
+	
 	@Transient
 	private Collection<GrantedAuthority> authorities;
+	
 	@ManyToMany
-	@JoinTable(name="users_role", joinColumns=@JoinColumn(name="user_id"), 
-		inverseJoinColumns=@JoinColumn(name="role_id"))
+	@JoinTable(name="users_role", joinColumns=@JoinColumn(name="user_id"), inverseJoinColumns=@JoinColumn(name="role_id"))
 	private Set<Role> roles;
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Product> products = new HashSet<>();
+	
+	private static final long serialVersionUID = 1;
 	
 	{
 		this.accountNonExpired = true;
 		this.accountNonLocked = true;
 		this.credentialsNonExpired = true;
 		this.enabled = true;
+	}
+	
+	public void initRoles() {
+		this.authorities = new ArrayList<>();
+		
+		for (Role role : this.getRoles()) {
+			authorities.add(new SimpleGrantedAuthority(role.getRole()));
+		}
 	}
 
 	public long getId() {
@@ -135,7 +165,6 @@ public class User implements UserDetails {
 
 	@Override
 	public Collection<GrantedAuthority> getAuthorities() {
-		
 		return authorities;
 	}
 

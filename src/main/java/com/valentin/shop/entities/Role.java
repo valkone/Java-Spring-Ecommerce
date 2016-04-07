@@ -1,14 +1,22 @@
 package com.valentin.shop.entities;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Role {
+public class Role implements Serializable{
 
 	@Id
+	@Column(name = "ID")
 	private long id;
+	
+	@Column(name = "ROLE")
 	private String role;
+
+	private static final long serialVersionUID = 3;
 
 	public long getId() {
 		return id;
