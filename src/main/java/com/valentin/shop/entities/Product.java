@@ -26,7 +26,6 @@ public class Product implements Serializable{
 	@Column(name = "PRICE")
 	private double price;
 	
-	@Column(name = "USER")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
 

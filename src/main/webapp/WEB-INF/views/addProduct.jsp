@@ -8,6 +8,11 @@
             <%@ include file="partial-views/aside.jsp" %>
             <div id="main-content">
                 <div id="mcontent">
+                	<c:if test="${status.isSuccess()}">
+						<div class="success">
+							${status.getSuccessMessage()}
+						</div>
+					</c:if>
 					<form method="POST" modelAttribute="product">
 						<p>Name:</p> <input type="text" name="name" class="customInput" /> 
 						<p>Quantity:</p> <input type="text" name="quantity" class="customInput" /> <br />

@@ -1,5 +1,7 @@
 package com.valentin.shop.services;
 
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,9 +26,16 @@ public class ProductServiceImpl implements ProductService {
 	public Status addProduct(ProductDto productDto, User activeUser) {
 		Product product = this.modelMapper.map(productDto, Product.class);
 		product.setUser(activeUser);
-		this.productDao.addProduct(product);
+		return this.productDao.addProduct(product);
+	}
+
+	@Override
+	public List<Product> getUserProducts(User user) {
+		if(!this.productDao.isUserExists(user.getId())) {
+			return null;
+		}
 		
-		return null;
+		return this.productDao.getUserProducts(user);
 	}
 
 }
