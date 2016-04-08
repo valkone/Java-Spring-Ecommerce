@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.tags.HtmlEscapeTag;
 import org.springframework.web.util.HtmlUtils;
 
+import com.valentin.shop.dto.RegisterDto;
 import com.valentin.shop.interfaces.UserService;
 import com.valentin.shop.models.Status;
-import com.valetnin.shop.dto.RegisterDto;
 
 @Controller
 public class UserController {

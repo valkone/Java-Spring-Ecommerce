@@ -7,11 +7,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+
+import com.valentin.shop.dto.RegisterDto;
 import com.valentin.shop.entities.User;
 import com.valentin.shop.interfaces.UserDao;
 import com.valentin.shop.interfaces.UserService;
 import com.valentin.shop.models.Status;
-import com.valetnin.shop.dto.RegisterDto;
 
 @Service
 public class UserServiceImpl implements UserService {

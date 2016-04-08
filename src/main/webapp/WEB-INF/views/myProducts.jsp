@@ -26,7 +26,7 @@
 										<td>${ product.getName() }</td>
 										<td>${ product.getQuantity() }</td>
 										<td>${ product.getPrice() }</td>
-										<td><button class="customButton">Edit</button></td>
+										<td><button onClick="location.href='productEdit?id=${ product.getId() }'" class="customButton">Edit</button></td>
 										<td><button class="customButton">Delete</button></td>
 									</tr>
 								</c:forEach>

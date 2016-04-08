@@ -1,4 +1,4 @@
-package com.valetnin.shop.dto;
+package com.valentin.shop.dto;
 
 public class RegisterDto {
 	private String username;

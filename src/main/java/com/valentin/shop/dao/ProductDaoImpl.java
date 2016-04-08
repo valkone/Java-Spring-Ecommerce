@@ -10,6 +10,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.valentin.shop.dto.ProductDto;
 import com.valentin.shop.entities.Product;
 import com.valentin.shop.entities.User;
 import com.valentin.shop.interfaces.ProductDao;
@@ -39,21 +40,22 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public boolean isUserExists(long userId) {
-		Criteria criteria = this.sessionFactory.openSession().createCriteria(User.class);
+		Session session = this.sessionFactory.openSession();
+		Criteria criteria = session.createCriteria(User.class);
 		Criteria c = criteria.add(Restrictions.eq("id", userId));
 
 		if(c.list().size() == 0) {
 			return false;
 		}
+		session.close();
 		
 		return true;
 	}
 
 	@Override
 	public List<Product> getUserProducts(User user) {
-		Criteria criteria = this
-				.sessionFactory
-				.openSession()
+		Session session = sessionFactory.openSession();
+		Criteria criteria = session
 				.createCriteria(Product.class)
 				.add(Restrictions.eq("user", user));
 		
@@ -62,6 +64,40 @@ public class ProductDaoImpl implements ProductDao {
 			products.add((Product)product);
 		}
 		
+		session.close();
+		
 		return products;
+	}
+
+	@Override
+	public Product getUserProduct(User user, long productId) {
+		Session session  = this.sessionFactory.openSession();
+		Criteria criteria = session
+				.createCriteria(Product.class)
+				.add(Restrictions.eq("user", user))
+				.add(Restrictions.eq("id", productId));
+		
+		List<Object> products = criteria.list();
+		session.close();
+		
+		return products.size() == 0 ? null : (Product) products.get(0);
+	}
+
+	@Override
+	public Status editProduct(Product product, User user) {
+		Product productToUpdate = this.getUserProduct(user, product.getId());
+		productToUpdate.setName(product.getName());
+		productToUpdate.setPrice(product.getPrice());
+		productToUpdate.setQuantity(product.getQuantity());
+		
+		Session session = this.sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		session.update(productToUpdate);
+		tx.commit();
+		session.close();
+		
+		Status status = new Status();
+		status.setSuccessMessage("You successfuly edited your product");
+		return status;
 	}
 }
