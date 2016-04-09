@@ -28,6 +28,9 @@ public class Product implements Serializable{
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
+	
+	@Column(name = "IS_ACTIVE")
+	private byte isActive;
 
 	private static final long serialVersionUID = 2;
 
@@ -69,5 +72,13 @@ public class Product implements Serializable{
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public byte getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(byte isActive) {
+		this.isActive = isActive;
 	}
 }

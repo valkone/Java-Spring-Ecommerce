@@ -13,4 +13,5 @@ public interface ProductDao {
 	List<Product> getUserProducts(User user);
 	Product getUserProduct(User user, long productId);
 	Status editProduct(Product product, User user);
+	Status deleteProduct(Product product);
 }

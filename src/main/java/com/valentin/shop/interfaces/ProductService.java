@@ -12,4 +12,5 @@ public interface ProductService {
 	List<Product> getUserProducts(User user);
 	Product getUserProduct(User user, long productId);
 	Status editProduct(ProductDto product, User user);
+	Status deleteProduct(long productId, User user);
 }

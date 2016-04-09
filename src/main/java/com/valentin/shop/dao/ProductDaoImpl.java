@@ -57,7 +57,8 @@ public class ProductDaoImpl implements ProductDao {
 		Session session = sessionFactory.openSession();
 		Criteria criteria = session
 				.createCriteria(Product.class)
-				.add(Restrictions.eq("user", user));
+				.add(Restrictions.eq("user", user))
+				.add(Restrictions.eq("isActive", (byte)1));
 		
 		ArrayList<Product> products = new ArrayList<>();
 		for(Object product : criteria.list()) {
@@ -85,6 +86,7 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public Status editProduct(Product product, User user) {
+		// TODO: move busuness logic into the product service
 		Product productToUpdate = this.getUserProduct(user, product.getId());
 		productToUpdate.setName(product.getName());
 		productToUpdate.setPrice(product.getPrice());
@@ -98,6 +100,19 @@ public class ProductDaoImpl implements ProductDao {
 		
 		Status status = new Status();
 		status.setSuccessMessage("You successfuly edited your product");
+		return status;
+	}
+
+	@Override
+	public Status deleteProduct(Product product) {
+		Session session = this.sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		session.update(product);
+		tx.commit();
+		session.close();
+		
+		Status status = new Status();
+		status.setSuccessMessage("You successfuly deleted your product");
 		return status;
 	}
 }

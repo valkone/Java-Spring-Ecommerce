@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.valentin.shop.entities.Product;
 import com.valentin.shop.entities.User;
@@ -68,5 +69,13 @@ public class ProductController {
 		model.addAttribute("status", status);
 		
 		return "addProduct";
+	}
+	
+	@RequestMapping(value="deleteProduct", method=RequestMethod.POST)
+	public String deleteProduct(Principal principal, @RequestParam("productId") long productId) {
+		User activeUser = (User) ((Authentication) principal).getPrincipal();
+		this.productService.deleteProduct(productId, activeUser);
+		
+		return "redirect:/myProducts";
 	}
 }
