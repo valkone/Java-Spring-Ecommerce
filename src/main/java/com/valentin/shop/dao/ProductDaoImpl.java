@@ -86,15 +86,9 @@ public class ProductDaoImpl implements ProductDao {
 
 	@Override
 	public Status editProduct(Product product, User user) {
-		// TODO: move busuness logic into the product service
-		Product productToUpdate = this.getUserProduct(user, product.getId());
-		productToUpdate.setName(product.getName());
-		productToUpdate.setPrice(product.getPrice());
-		productToUpdate.setQuantity(product.getQuantity());
-		
 		Session session = this.sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
-		session.update(productToUpdate);
+		session.update(product);
 		tx.commit();
 		session.close();
 		

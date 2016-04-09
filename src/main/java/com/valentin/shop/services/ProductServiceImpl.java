@@ -45,14 +45,23 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Status editProduct(ProductDto productDto, User user) {
-		// TODO: check if the current user is the product owner
-		Product product = this.modelMapper.map(productDto, Product.class);
-		return this.productDao.editProduct(product, user);
+		Product productToUpdate = this.productDao.getUserProduct(user, productDto.getId());
+		if(productToUpdate == null) {
+			Status status = new Status();
+			status.setError("Invalid product");
+			
+			return status;
+		}
+		
+		productToUpdate.setName(productDto.getName());
+		productToUpdate.setPrice(productDto.getPrice());
+		productToUpdate.setQuantity(productDto.getQuantity());
+		
+		return this.productDao.editProduct(productToUpdate, user);
 	}
 
 	@Override
 	public Status deleteProduct(long productId, User user) {
-		// TODO: check if the current user is the product owner
 		Product product = this.productDao.getUserProduct(user, productId);
 		if(product == null) {
 			Status status = new Status();
