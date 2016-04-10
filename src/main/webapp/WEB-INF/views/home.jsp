@@ -9,84 +9,22 @@
             <div id="main-content">
                 <div class="product-section">
                     <div class="label">BESTSELLERS</div>
-                    <div class="product">
-                        <a href="#">
-                            <div class="product-image">
-                                <img src="images/product.jpg"/>
-                            </div>
-                            <div class="product-name">
-                                Laptop ProBook 45040s
-                            </div>
-                            <div class="product-price">
-                                $26.00
-                            </div>
-                        </a>
-                    </div>
-                    <div class="product">
-                        <a href="#">
-                            <div class="product-image">
-                                <img src="images/product.jpg"/>
-                            </div>
-                            <div class="product-name">
-                                Laptop ProBook 45040s
-                            </div>
-                            <div class="product-price">
-                                $26.00
-                            </div>
-                        </a>
-                    </div>
-                    <div class="product">
-                        <a href="#">
-                            <div class="product-image">
-                                <img src="images/product.jpg"/>
-                            </div>
-                            <div class="product-name">
-                                Laptop ProBook 45040s
-                            </div>
-                            <div class="product-price">
-                                $26.00
-                            </div>
-                        </a>
-                    </div>
-                    <div class="product">
-                        <a href="#">
-                            <div class="product-image">
-                                <img src="images/product.jpg"/>
-                            </div>
-                            <div class="product-name">
-                                Laptop ProBook 45040s
-                            </div>
-                            <div class="product-price">
-                                $26.00
-                            </div>
-                        </a>
-                    </div>
-                    <div class="product">
-                        <a href="#">
-                            <div class="product-image">
-                                <img src="images/product.jpg"/>
-                            </div>
-                            <div class="product-name">
-                                Laptop ProBook 45040s
-                            </div>
-                            <div class="product-price">
-                                $26.00
-                            </div>
-                        </a>
-                    </div>
-                    <div class="product">
-                        <a href="#">
-                            <div class="product-image">
-                                <img src="images/product.jpg"/>
-                            </div>
-                            <div class="product-name">
-                                Laptop ProBook 45040s
-                            </div>
-                            <div class="product-price">
-                                $26.00
-                            </div>
-                        </a>
-                    </div>
+                   	
+                   	<c:forEach var="product" items="${ products }">
+	                    <div class="product">
+	                        <a href="product/${ product.getId() }">
+	                            <div class="product-image">
+	                                <img src="images/product.jpg"/>
+	                            </div>
+	                            <div class="product-name">
+	                                ${ product.getName() }
+	                            </div>
+	                            <div class="product-price">
+	                                $${ product.getPrice() }
+	                            </div>
+	                        </a>
+	                    </div>
+                   	</c:forEach>
                     <div class="clear"></div>
                 </div>
             </div>

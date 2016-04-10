@@ -1,12 +1,10 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <div id="aside">
     <div class="label">CATEGORY</div>
     <ul>
-        <a href="#"><li>LAPTOP</li></a>
-        <a href="#"><li>KEYBOARD</li></a>
-        <a href="#"><li>TABLET</li></a>
-        <a href="#"><li>FASHION</li></a>
-        <a href="#"><li>TELEVISION</li></a>
-        <a href="#"><li>PHONE</li></a>
-        <a href="#"><li>GAME</li></a>
+		<c:forEach var="category" items="${ categories }">
+        	<a href="category/${ category.getId() }"><li>${ category.getCategory() }</li></a>
+		</c:forEach>
     </ul>
 </div>

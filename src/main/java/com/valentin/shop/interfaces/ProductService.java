@@ -11,6 +11,7 @@ import com.valentin.shop.models.Status;
 public interface ProductService {
 	Status addProduct(ProductDto product, User activeUser, ProductCategory category);
 	List<Product> getUserProducts(User user);
+	List<Product> getAllProducts();
 	Product getUserProduct(User user, long productId);
 	Status editProduct(ProductDto product, User user);
 	Status deleteProduct(long productId, User user);
