@@ -17,6 +17,13 @@
 						<p>Name:</p> <input type="text" name="name" class="customInput" /> 
 						<p>Quantity:</p> <input type="text" name="quantity" class="customInput" /> <br />
 						<p>Price:</p> <input type="text" name="price" class="customInput" /> <br />
+						<p>Category:</p>
+						<select name="category">
+							<c:forEach var="category" items="${ categories }">
+								<option value="${ category.getId() }">${ category.getCategory() }</option>
+							</c:forEach>
+						</select>
+						<br />
 						<br />
 						<input type="submit" class="customButton" value="Add Product" name="customButton" />
 					</form>

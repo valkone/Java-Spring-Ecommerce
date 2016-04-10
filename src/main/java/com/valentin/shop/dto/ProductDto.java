@@ -5,6 +5,7 @@ public class ProductDto {
 	private String name;
 	private int quantity;
 	private double price;
+	private int category;
 
 	public long getId() {
 		return id;
@@ -36,5 +37,13 @@ public class ProductDto {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public int getCategory() {
+		return category;
+	}
+
+	public void setCategory(int category) {
+		this.category = category;
 	}
 }

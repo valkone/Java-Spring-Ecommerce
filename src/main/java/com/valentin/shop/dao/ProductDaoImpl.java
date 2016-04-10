@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.valentin.shop.dto.ProductDto;
 import com.valentin.shop.entities.Product;
+import com.valentin.shop.entities.ProductCategory;
 import com.valentin.shop.entities.User;
 import com.valentin.shop.interfaces.ProductDao;
 import com.valentin.shop.models.Status;
@@ -108,5 +109,30 @@ public class ProductDaoImpl implements ProductDao {
 		Status status = new Status();
 		status.setSuccessMessage("You successfuly deleted your product");
 		return status;
+	}
+
+	@Override
+	public List<ProductCategory> getAllCategories() {
+		Session session = this.sessionFactory.openSession();
+		Criteria criteria = session.createCriteria(ProductCategory.class);
+		
+		ArrayList<ProductCategory> products = new ArrayList<>();
+		
+		for(Object p : criteria.list()) {
+			products.add((ProductCategory)p);
+		}
+
+		session.close();
+		
+		return products;
+	}
+
+	@Override
+	public ProductCategory getCategoryById(int catId) {
+		Session session = this.sessionFactory.openSession();
+		Criteria criteria = session.createCriteria(ProductCategory.class);
+		criteria.add(Restrictions.eq("id", catId));
+		
+		return (ProductCategory) criteria.list().get(0);
 	}
 }

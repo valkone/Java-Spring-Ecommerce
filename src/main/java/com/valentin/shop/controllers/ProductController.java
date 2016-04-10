@@ -1,6 +1,7 @@
 package com.valentin.shop.controllers;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.valentin.shop.entities.Product;
+import com.valentin.shop.entities.ProductCategory;
 import com.valentin.shop.entities.User;
 import com.valentin.shop.interfaces.ProductService;
 import com.valentin.shop.models.Status;
@@ -36,7 +38,10 @@ public class ProductController {
 	}
 	
 	@RequestMapping(value="addProduct", method=RequestMethod.GET)
-	public String addProductView(Principal principal) {
+	public String addProductView(Principal principal, Model model) {
+		List<ProductCategory> categories = this.productService.getAllCategories();
+		model.addAttribute("categories", categories);
+		
 		return "addProduct";
 	}
 	
@@ -44,7 +49,8 @@ public class ProductController {
 	@RequestMapping(value="addProduct", method=RequestMethod.POST)
 	public String addProduct(@ModelAttribute("product") ProductDto product, Principal principal, Model model) {
 		User activeUser = (User) ((Authentication) principal).getPrincipal();
-		Status status = this.productService.addProduct(product, activeUser);
+		ProductCategory category = this.productService.getCategoryById(product.getCategory());
+		Status status = this.productService.addProduct(product, activeUser, category);
 		model.addAttribute("status", status);
 		
 		return "addProduct";

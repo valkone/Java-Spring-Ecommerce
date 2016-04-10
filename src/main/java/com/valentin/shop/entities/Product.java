@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -31,6 +32,9 @@ public class Product implements Serializable{
 	
 	@Column(name = "IS_ACTIVE")
 	private byte isActive;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private ProductCategory category;
 
 	private static final long serialVersionUID = 2;
 
@@ -80,5 +84,13 @@ public class Product implements Serializable{
 
 	public void setIsActive(byte isActive) {
 		this.isActive = isActive;
+	}
+
+	public ProductCategory getCategory() {
+		return category;
+	}
+
+	public void setCategory(ProductCategory category) {
+		this.category = category;
 	}
 }

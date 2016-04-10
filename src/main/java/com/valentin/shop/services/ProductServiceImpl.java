@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.valentin.shop.dto.ProductDto;
 import com.valentin.shop.entities.Product;
+import com.valentin.shop.entities.ProductCategory;
 import com.valentin.shop.entities.User;
 import com.valentin.shop.interfaces.ProductDao;
 import com.valentin.shop.interfaces.ProductService;
@@ -23,9 +24,10 @@ public class ProductServiceImpl implements ProductService {
 	private ModelMapper modelMapper;
 	
 	@Override
-	public Status addProduct(ProductDto productDto, User activeUser) {
+	public Status addProduct(ProductDto productDto, User activeUser, ProductCategory category) {
 		Product product = this.modelMapper.map(productDto, Product.class);
 		product.setUser(activeUser);
+		product.setCategory(category);
 		return this.productDao.addProduct(product);
 	}
 
@@ -72,5 +74,15 @@ public class ProductServiceImpl implements ProductService {
 		
 		product.setIsActive((byte)0); // delete the product
 		return this.productDao.deleteProduct(product);
+	}
+
+	@Override
+	public List<ProductCategory> getAllCategories() {
+		return this.productDao.getAllCategories();
+	}
+
+	@Override
+	public ProductCategory getCategoryById(int catId) {
+		return this.productDao.getCategoryById(catId);
 	}
 }
