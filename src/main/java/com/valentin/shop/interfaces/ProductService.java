@@ -12,6 +12,7 @@ public interface ProductService {
 	Status addProduct(ProductDto product, User activeUser, ProductCategory category);
 	List<Product> getUserProducts(User user);
 	List<Product> getAllProducts();
+	List<Product> getProductsByCategoryId(int catId);
 	Product getUserProduct(User user, long productId);
 	Status editProduct(ProductDto product, User user);
 	Status deleteProduct(long productId, User user);

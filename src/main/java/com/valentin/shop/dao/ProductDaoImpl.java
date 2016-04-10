@@ -132,15 +132,33 @@ public class ProductDaoImpl implements ProductDao {
 		Session session = this.sessionFactory.openSession();
 		Criteria criteria = session.createCriteria(ProductCategory.class);
 		criteria.add(Restrictions.eq("id", catId));
+		
+		ProductCategory category =  (ProductCategory) criteria.list().get(0);
 		session.close();
 		
-		return (ProductCategory) criteria.list().get(0);
+		return category;
 	}
 
 	@Override
 	public List<Product> getAllProducts() {
 		Session session = this.sessionFactory.openSession();
 		Criteria criteria = session.createCriteria(Product.class);
+		
+		ArrayList<Product> products = new ArrayList<>();
+		
+		for(Object product : criteria.list()) {
+			products.add((Product)product);
+		}
+		session.close();
+		
+		return products;
+	}
+
+	@Override
+	public List<Product> getProductsByCategoryId(ProductCategory category) {
+		Session session = this.sessionFactory.openSession();
+		Criteria criteria = session.createCriteria(Product.class);
+		criteria.add(Restrictions.eq("category", category));
 		
 		ArrayList<Product> products = new ArrayList<>();
 		

@@ -11,7 +11,8 @@ public interface ProductDao {
 	Status addProduct(Product product);
 	boolean isUserExists(long userId);
 	List<Product> getUserProducts(User user);
-	List<Product> getAllProducts();;
+	List<Product> getAllProducts();
+	List<Product> getProductsByCategoryId(ProductCategory category);
 	Product getUserProduct(User user, long productId);
 	Status editProduct(Product product, User user);
 	Status deleteProduct(Product product);
