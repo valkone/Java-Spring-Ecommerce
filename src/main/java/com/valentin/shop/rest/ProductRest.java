@@ -26,10 +26,8 @@ public class ProductRest {
 		
 		for(Product product : products) {
 			ProductDto productDto = new ProductDto();
-			productDto.setDescription(product.getDescription());
 			productDto.setId(product.getId());
 			productDto.setName(product.getName());
-			productDto.setPictureUrl(product.getPictureUrl());
 			productDto.setPrice(product.getPrice());
 			productDto.setQuantity(product.getQuantity());
 			

@@ -12,13 +12,7 @@
 					<button id="searchButton" class="custonButton">Search</button>
 					<br /><br />
 					
-					<div id="products">
-						<div class="product">
-							<div class="productName">Laptop</div>
-							<div class="productQuantity">Quantity: 20</div>
-							<div class="productPrice">Price: $20</div>
-						</div>
-					</div>
+					<div id="products"></div>
 					
             		<div class="clear"></div>
 				</div>
@@ -35,7 +29,7 @@
 		$.get( "productSearch?title=" + title, function( data ) {
 			 data.forEach(function( product ) {
 				 var product = "<div class='product'>" +
-					"<div class='productName'>"+ product.name +"</div>" +
+					"<div class='productName'><a href='product?id="+ product.id +"'>"+ product.name +"</a></div>" +
 					"<div class='productQuantity'>Quantity: "+ product.quantity +"</div>" +
 					"<div class='productPrice'>Price: $"+ product.price +"</div>" +
 					"</div>";
