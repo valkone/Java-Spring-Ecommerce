@@ -92,4 +92,9 @@ public class ProductController {
 		
 		return "product";
 	}
+	
+	@RequestMapping(value="search", method=RequestMethod.GET)
+	public String searchView(Model model) {
+		return "search";
+	}
 }

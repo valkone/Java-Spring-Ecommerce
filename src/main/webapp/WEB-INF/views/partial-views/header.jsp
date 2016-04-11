@@ -26,6 +26,7 @@
                         	<li><tab><a href="register">Register</a></tab></li>
                 		</sec:authorize>
                     	<sec:authorize access="isAuthenticated()">
+	                		<li><tab><a href="search">Search</a></tab></li>
 	                		<li><tab><a href="myProducts">My Products</a></tab></li>
 	                		<li><tab><a href="logout">Logout</a></tab></li>    
                     	</sec:authorize>
@@ -39,12 +40,12 @@
                 <div id="logo">
                     <a href="#"><img src="resources/images/logo.jpg" /></a>
                 </div>
-                <div id="search">
+                <!-- <div id="search">
                     <form>
                         <input type="text" name="search" id="search-input" placeholder="Enter your search key ... " />
                         <input type="submit" value="Search" class="customButton" />
                     </form>
-                </div>
+                </div> -->
                 <div class="clear"></div>
             </div>
             <div id="main-menu">

@@ -6,6 +6,8 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -143,6 +145,8 @@ public class ProductDaoImpl implements ProductDao {
 	public List<Product> getAllProducts() {
 		Session session = this.sessionFactory.openSession();
 		Criteria criteria = session.createCriteria(Product.class);
+		//TODO: add date into products
+		//criteria.addOrder(Order.desc("date"));
 		
 		ArrayList<Product> products = new ArrayList<>();
 		
@@ -175,7 +179,25 @@ public class ProductDaoImpl implements ProductDao {
 		Session session = this.sessionFactory.openSession();
 		Criteria criteria = session.createCriteria(Product.class);
 		criteria.add(Restrictions.eq("id", productId));
+		Product product = (Product) criteria.list().get(0);
+		session.close();
 		
-		return (Product) criteria.list().get(0);
+		return product;
+	}
+
+	@Override
+	public List<Product> searchProducts(String title) {
+		Session session = this.sessionFactory.openSession();
+		Criteria criteria = session.createCriteria(Product.class);
+		criteria.add(Restrictions.ilike("name", title, MatchMode.ANYWHERE));
+		
+		ArrayList<Product> products = new ArrayList<>();
+		
+		for(Object product : criteria.list()) {
+			products.add((Product)product);
+		}
+		session.close();
+		
+		return products;
 	}
 }

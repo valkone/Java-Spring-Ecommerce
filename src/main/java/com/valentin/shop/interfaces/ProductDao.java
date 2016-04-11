@@ -19,4 +19,5 @@ public interface ProductDao {
 	List<ProductCategory> getAllCategories();
 	ProductCategory getCategoryById(int catId);
 	Product getProductById(long productId);
+	List<Product> searchProducts(String title);
 }

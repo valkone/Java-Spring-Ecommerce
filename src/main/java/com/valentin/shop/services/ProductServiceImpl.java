@@ -102,4 +102,9 @@ public class ProductServiceImpl implements ProductService {
 	public Product getProductById(long productId) {
 		return this.productDao.getProductById(productId);
 	}
+
+	@Override
+	public List<Product> searchProducts(String title) {
+		return this.productDao.searchProducts(title);
+	}
 }
