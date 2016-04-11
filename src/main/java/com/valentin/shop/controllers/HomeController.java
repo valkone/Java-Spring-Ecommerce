@@ -18,7 +18,7 @@ public class HomeController {
 	@Autowired
 	private ProductService productService;
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home(Model model) {
 		List<ProductCategory> categories = this.productService.getAllCategories();
 		// TODO: pagination

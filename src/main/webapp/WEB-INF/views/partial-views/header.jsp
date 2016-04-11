@@ -49,7 +49,7 @@
             </div>
             <div id="main-menu">
                 <ul>
-                    <li><a href="#">HOME</a></li>
+                    <li><a href="home">HOME</a></li>
                     <li><a href="#">LEGAL NOTICE</a></li>
                     <li><a href="#">SECURE PAYMENT</a></li>
                     <li><a href="#">ABOUT US</a></li>

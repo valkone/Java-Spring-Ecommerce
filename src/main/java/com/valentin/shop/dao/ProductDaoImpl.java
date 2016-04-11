@@ -169,4 +169,13 @@ public class ProductDaoImpl implements ProductDao {
 		
 		return products;
 	}
+
+	@Override
+	public Product getProductById(long productId) {
+		Session session = this.sessionFactory.openSession();
+		Criteria criteria = session.createCriteria(Product.class);
+		criteria.add(Restrictions.eq("id", productId));
+		
+		return (Product) criteria.list().get(0);
+	}
 }

@@ -18,4 +18,5 @@ public interface ProductDao {
 	Status deleteProduct(Product product);
 	List<ProductCategory> getAllCategories();
 	ProductCategory getCategoryById(int catId);
+	Product getProductById(long productId);
 }

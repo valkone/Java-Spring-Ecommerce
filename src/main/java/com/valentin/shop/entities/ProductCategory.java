@@ -20,7 +20,7 @@ public class ProductCategory implements Serializable {
 	private int id;
 
 	@Column(name = "CATEGORY")
-	private String category;
+	private String name;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
 	private Set<Product> products = new HashSet<>();
@@ -35,12 +35,12 @@ public class ProductCategory implements Serializable {
 		this.id = id;
 	}
 
-	public String getCategory() {
-		return category;
+	public String getName() {
+		return name;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setName(String category) {
+		this.name = category;
 	}
 
 	public Set<Product> getProducts() {

@@ -18,4 +18,5 @@ public interface ProductService {
 	Status deleteProduct(long productId, User user);
 	List<ProductCategory> getAllCategories();
 	ProductCategory getCategoryById(int catId);
+	Product getProductById(long productId);
 }

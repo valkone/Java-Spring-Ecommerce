@@ -28,6 +28,7 @@ public class ProductServiceImpl implements ProductService {
 		Product product = this.modelMapper.map(productDto, Product.class);
 		product.setUser(activeUser);
 		product.setCategory(category);
+		product.setIsActive((byte)1);
 		return this.productDao.addProduct(product);
 	}
 
@@ -95,5 +96,10 @@ public class ProductServiceImpl implements ProductService {
 	public List<Product> getProductsByCategoryId(int catId) {
 		ProductCategory category = this.productDao.getCategoryById(catId);
 		return this.productDao.getProductsByCategoryId(category);
+	}
+
+	@Override
+	public Product getProductById(long productId) {
+		return this.productDao.getProductById(productId);
 	}
 }

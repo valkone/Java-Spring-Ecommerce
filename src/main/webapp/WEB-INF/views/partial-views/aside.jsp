@@ -4,7 +4,7 @@
     <div class="label">CATEGORY</div>
     <ul>
 		<c:forEach var="category" items="${ categories }">
-        	<a href="category/${ category.getId() }"><li>${ category.getCategory() }</li></a>
+        	<a href="category?id=${ category.getId() }"><li>${ category.getName() }</li></a>
 		</c:forEach>
     </ul>
 </div>

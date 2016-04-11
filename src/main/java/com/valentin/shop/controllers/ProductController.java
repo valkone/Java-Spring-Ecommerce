@@ -84,4 +84,12 @@ public class ProductController {
 		
 		return "redirect:/myProducts";
 	}
+	
+	@RequestMapping(value="product", method=RequestMethod.GET)
+	public String productView(Model model, @RequestParam("id") long productId) {
+		Product product = this.productService.getProductById(productId);
+		model.addAttribute("product", product);
+		
+		return "product";
+	}
 }

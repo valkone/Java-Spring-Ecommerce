@@ -12,7 +12,7 @@
                    	
                    	<c:forEach var="product" items="${ products }">
 	                    <div class="product">
-	                        <a href="product/${ product.getId() }">
+	                        <a href="product?id=${ product.getId() }">
 	                            <div class="product-image">
 	                                <img src="images/product.jpg"/>
 	                            </div>
