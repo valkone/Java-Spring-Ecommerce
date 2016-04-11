@@ -20,9 +20,11 @@
 						<p>Category:</p>
 						<select name="category">
 							<c:forEach var="category" items="${ categories }">
-								<option value="${ category.getId() }">${ category.getCategory() }</option>
+								<option value="${ category.getId() }">${ category.getName() }</option>
 							</c:forEach>
 						</select>
+						<p>Picture Url:</p> <input type="text" name="pictureUrl" class="customInput" /> <br />
+						<p>Description:</p> <input type="text" name="description" class="customInput" /> <br />
 						<br />
 						<br />
 						<input type="submit" class="customButton" value="Add Product" name="customButton" />

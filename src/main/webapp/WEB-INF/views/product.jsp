@@ -20,9 +20,9 @@
             <div id="product">
                 <div id="product-picture">
                     <div id="main-pic">
-                        <img src="images/product.jpg" />
+                        <img src="${ product.getPictureUrl() }" />
                     </div>
-                    <div id="small-pics">
+                    <!-- <div id="small-pics">
                         <div class="small-pic">
                             <img src="images/product.jpg" />
                         </div>
@@ -32,7 +32,7 @@
                         <div class="small-pic">
                             <img src="images/product.jpg" />
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div id="product-description">
                     <h1>${ product.getName() }</h1>
@@ -47,7 +47,7 @@
                     <br />
                     <div class="label">Description:</div>
                     <div id="description">
-                        Printed chiffon knee length dress with tank straps. Deep v-neckline.Printed chiffon knee length dress with tank straps. Deep v-neckline.
+                        ${ product.getDescription() }
                     </div>
                     <div id="available">
                         ${ product.getQuantity() } items <span>In stock</span>

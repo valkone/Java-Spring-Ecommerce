@@ -35,6 +35,12 @@ public class Product implements Serializable{
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	private ProductCategory category;
+	
+	@Column(name = "PICTURE_URL")
+	private String pictureUrl;
+	
+	@Column(name = "DESCRIPTION")
+	private String description;
 
 	private static final long serialVersionUID = 2;
 
@@ -92,5 +98,21 @@ public class Product implements Serializable{
 
 	public void setCategory(ProductCategory category) {
 		this.category = category;
+	}
+
+	public String getPictureUrl() {
+		return pictureUrl;
+	}
+
+	public void setPictureUrl(String pictureUrl) {
+		this.pictureUrl = pictureUrl;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }
