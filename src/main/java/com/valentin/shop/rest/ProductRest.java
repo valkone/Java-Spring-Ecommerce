@@ -20,8 +20,12 @@ public class ProductRest {
 	private ProductService productService;
 	
 	@RequestMapping("/productSearch")
-    public List<ProductDto> productSearch(@RequestParam(value="title") String title) {
-		List<Product> products = this.productService.searchProducts(title);
+    public List<ProductDto> productSearch(@RequestParam(value="title") String title,
+			@RequestParam(value="minPrice") double minPrice,
+			@RequestParam(value="maxPrice") double maxPrice,
+			@RequestParam(value="quantity") int quantity) {
+		
+		List<Product> products = this.productService.searchProducts(title, minPrice, maxPrice, quantity);
 		List<ProductDto> productsDto = new ArrayList<>();
 		
 		for(Product product : products) {

@@ -8,7 +8,10 @@
             <%@ include file="partial-views/aside.jsp" %>
             <div id="main-content">
                 <div id="mcontent">
-					Search: <input type="text" name="search" id="title" />
+					Search: <input type="text" name="search" id="title" /><br />
+					Minimum Price: <input type="text" id="priceMin" /><br /> 
+					Max Price: <input type="text" id="priceMax" /><br />
+					Quantity(at least): <input type="text" id="quantity" /><br />
 					<button id="searchButton" class="custonButton">Search</button>
 					<br /><br />
 					
@@ -24,9 +27,27 @@
 
 <script type="text/javascript">
 	$("#searchButton").click(function() {
-		var title = $("#title").val();
 		$("#products").empty();
-		$.get( "productSearch?title=" + title, function( data ) {
+		
+		var title = $("#title").val();
+		var priceMin = $("#priceMin").val();
+		var priceMax = $("#priceMax").val();
+		var quantity = $("#quantity").val();
+		
+		if(priceMax == "") {
+			priceMax = 0;
+		}
+		if(priceMin == "") {
+			priceMin = 0;
+		}
+		if(quantity == "") {
+			quantity = 0;
+		}
+		
+		var requestUrl = "productSearch?title=" + title + "&minPrice=" + priceMin + "&maxPrice=" + priceMax +
+				"&quantity=" + quantity;
+		
+		$.get( requestUrl, function( data ) {
 			 data.forEach(function( product ) {
 				 var product = "<div class='product'>" +
 					"<div class='productName'><a href='product?id="+ product.id +"'>"+ product.name +"</a></div>" +

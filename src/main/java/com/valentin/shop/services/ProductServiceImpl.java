@@ -104,7 +104,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<Product> searchProducts(String title) {
-		return this.productDao.searchProducts(title);
+	public List<Product> searchProducts(String title, double minPrice, double maxPrice, int quantity) {
+		return this.productDao.searchProducts(title, minPrice, maxPrice, quantity);
 	}
 }

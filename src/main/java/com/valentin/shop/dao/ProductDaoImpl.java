@@ -19,6 +19,8 @@ import com.valentin.shop.entities.User;
 import com.valentin.shop.interfaces.ProductDao;
 import com.valentin.shop.models.Status;
 
+import oracle.net.aso.q;
+
 @Repository
 public class ProductDaoImpl implements ProductDao {
 
@@ -186,10 +188,17 @@ public class ProductDaoImpl implements ProductDao {
 	}
 
 	@Override
-	public List<Product> searchProducts(String title) {
+	public List<Product> searchProducts(String title, double minPrice, double maxPrice, int quantity) {
 		Session session = this.sessionFactory.openSession();
 		Criteria criteria = session.createCriteria(Product.class);
 		criteria.add(Restrictions.ilike("name", title, MatchMode.ANYWHERE));
+		criteria.add(Restrictions.ge("price", minPrice));
+		if(maxPrice > 0) {
+			criteria.add(Restrictions.le("price", maxPrice));
+		}
+		if(quantity > 0) {
+			criteria.add(Restrictions.ge("quantity", quantity));
+		}
 		
 		ArrayList<Product> products = new ArrayList<>();
 		
