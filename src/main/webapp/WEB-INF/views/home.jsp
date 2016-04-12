@@ -4,6 +4,10 @@
 <c:set var="pageTitle" value="Home" scope="request" />
 <%@ include file="partial-views/header.jsp" %>
 
+<c:forEach items="${cart}" var="product">
+	${ product }
+    <br />
+  </c:forEach>
         <div id="content">
             <%@ include file="partial-views/aside.jsp" %>
             <div id="main-content">

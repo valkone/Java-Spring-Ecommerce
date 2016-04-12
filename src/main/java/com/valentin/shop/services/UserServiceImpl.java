@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
 			status.setError("Invalid email");
 		}
 
-		if (status.isSuccess()) {
+		if (status.isSuccessful()) {
 			User user = this.modelMapper.map(model, User.class);
 			// TODO: make password with BCrypt
 			/*

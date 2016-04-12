@@ -1,6 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" %>
-<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+
 <c:set var="pageTitle" value="Login" scope="request" />
 <%@ include file="partial-views/header.jsp" %>
 

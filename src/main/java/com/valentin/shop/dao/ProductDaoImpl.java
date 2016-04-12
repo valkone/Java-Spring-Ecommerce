@@ -7,19 +7,16 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.valentin.shop.dto.ProductDto;
 import com.valentin.shop.entities.Product;
 import com.valentin.shop.entities.ProductCategory;
 import com.valentin.shop.entities.User;
 import com.valentin.shop.interfaces.ProductDao;
 import com.valentin.shop.models.Status;
 
-import oracle.net.aso.q;
 
 @Repository
 public class ProductDaoImpl implements ProductDao {
@@ -90,7 +87,7 @@ public class ProductDaoImpl implements ProductDao {
 	}
 
 	@Override
-	public Status editProduct(Product product, User user) {
+	public Status editProduct(Product product) {
 		Session session = this.sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
 		session.update(product);

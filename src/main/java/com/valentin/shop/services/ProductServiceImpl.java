@@ -12,6 +12,7 @@ import com.valentin.shop.entities.ProductCategory;
 import com.valentin.shop.entities.User;
 import com.valentin.shop.interfaces.ProductDao;
 import com.valentin.shop.interfaces.ProductService;
+import com.valentin.shop.models.CartProduct;
 import com.valentin.shop.models.Status;
 
 @Service
@@ -60,7 +61,7 @@ public class ProductServiceImpl implements ProductService {
 		productToUpdate.setPrice(productDto.getPrice());
 		productToUpdate.setQuantity(productDto.getQuantity());
 		
-		return this.productDao.editProduct(productToUpdate, user);
+		return this.productDao.editProduct(productToUpdate);
 	}
 
 	@Override
@@ -106,5 +107,45 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<Product> searchProducts(String title, double minPrice, double maxPrice, int quantity) {
 		return this.productDao.searchProducts(title, minPrice, maxPrice, quantity);
+	}
+
+	@Override
+	public Status addProductToCart(int productId, int quantity, List<CartProduct> cart) {
+		Status status = new Status();
+		// TODO: if product id is invalid getProductById should return null 
+		Product product = this.productDao.getProductById(productId);
+		if(product == null) {
+			status.setError("Invalid product id");
+			return status;
+		}
+		
+		if(product.getQuantity() < quantity) {
+			status.setError("Invalid quantity");
+		}
+		
+		if(status.isSuccessful()) {
+			CartProduct cartProduct = modelMapper.map(product, CartProduct.class);
+			if(cart.contains(cartProduct)) {
+				int productIndex = cart.indexOf(cartProduct);
+				CartProduct currentProduct = cart.get(productIndex);
+				int totalQuantity = currentProduct.getQuantity() + quantity;
+				if(totalQuantity <= product.getQuantity()) {
+					cart.remove(productIndex);
+					currentProduct.setQuantity(totalQuantity);
+					cart.add(currentProduct);
+				} else {
+					status.setError("Invalid quantity");
+				}
+			} else {
+				cartProduct.setQuantity(quantity);
+				cart.add(cartProduct);
+			}
+		}
+		
+		if(status.isSuccessful()) {
+			status.setSuccessMessage("Product successfully added to the cart");
+		}
+		
+		return status;
 	}
 }

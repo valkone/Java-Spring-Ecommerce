@@ -2,7 +2,6 @@
 
 <c:set var="pageTitle" value="Home" scope="request" />
 <%@ include file="partial-views/header.jsp" %>
-
     <div id="content">
         <div id="aside">
             <div class="label">Tags</div>
@@ -18,6 +17,7 @@
         </div>
         <div id="main-content">
             <div id="product">
+            <div id="message"></div>
                 <div id="product-picture">
                     <div id="main-pic">
                         <img src="${ product.getPictureUrl() }" />
@@ -68,16 +68,39 @@
     </div>
 <%@ include file="partial-views/footer.jsp" %>
 <script type="text/javascript">
+	$("#buy-button").click(function() {
+		var productId = ${ product.getId() };
+		var quantity = $("#quantity-input").val();
+		
+		var requestUrl = "addProductToCart?productId=" + productId + "&quantity=" + quantity;
+
+		$.get( requestUrl, function( status ) {
+			$("#message").empty();
+			if(status.successful) {
+				var message = "<div class='success'>"+ status.successMessage +"</div>";
+				$("#message").append(message);
+			} else {
+				status.errors.forEach(function( error ) {
+					var message = "<div class='error'>"+ error +"</div>";
+					$("#message").append(message);
+				});
+			}
+		});	
+	});
+
     $("#add-quantity").click(function(){
         var currentQuantity = $("#quantity-input").val();
         var newQuantity = parseFloat(currentQuantity) + 1;
-        $("#quantity-input").val(newQuantity);
+        var maxQuantity = ${ product.getQuantity() };
+        if(newQuantity <= maxQuantity) {
+        	$("#quantity-input").val(newQuantity);
+        }
     });
 
     $("#remove-quantity").click(function(){
         var currentQuantity = $("#quantity-input").val();
         var newQuantity = parseFloat(currentQuantity) - 1;
-        if(newQuantity >= 0) {
+        if(newQuantity > 0) {
             $("#quantity-input").val(newQuantity);
         }
     });

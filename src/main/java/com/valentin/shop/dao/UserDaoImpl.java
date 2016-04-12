@@ -43,7 +43,7 @@ public class UserDaoImpl implements UserDao {
 			status.setError("Email already exists.");
 		}
 		
-		if(status.isSuccess()) {
+		if(status.isSuccessful()) {
 			Role defaultRole = (Role) sessionFactory
 					.openSession()
 					.createCriteria(Role.class)

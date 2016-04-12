@@ -26,6 +26,7 @@
                         	<li><tab><a href="register">Register</a></tab></li>
                 		</sec:authorize>
                     	<sec:authorize access="isAuthenticated()">
+	                		<li><tab><a href="cart">Cart</a></tab></li>
 	                		<li><tab><a href="search">Search</a></tab></li>
 	                		<li><tab><a href="myProducts">My Products</a></tab></li>
 	                		<li><tab><a href="logout">Logout</a></tab></li>    

@@ -6,6 +6,7 @@ import com.valentin.shop.dto.ProductDto;
 import com.valentin.shop.entities.Product;
 import com.valentin.shop.entities.ProductCategory;
 import com.valentin.shop.entities.User;
+import com.valentin.shop.models.CartProduct;
 import com.valentin.shop.models.Status;
 
 public interface ProductService {
@@ -20,4 +21,5 @@ public interface ProductService {
 	ProductCategory getCategoryById(int catId);
 	Product getProductById(long productId);
 	List<Product> searchProducts(String title, double minPrice, double maxPrice, int quantity);
+	Status addProductToCart(int productId, int quantity, List<CartProduct> cart);
 }

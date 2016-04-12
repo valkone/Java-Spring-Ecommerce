@@ -14,7 +14,7 @@ public interface ProductDao {
 	List<Product> getAllProducts();
 	List<Product> getProductsByCategoryId(ProductCategory category);
 	Product getUserProduct(User user, long productId);
-	Status editProduct(Product product, User user);
+	Status editProduct(Product product);
 	Status deleteProduct(Product product);
 	List<ProductCategory> getAllCategories();
 	ProductCategory getCategoryById(int catId);

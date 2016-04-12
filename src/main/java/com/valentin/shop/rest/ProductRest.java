@@ -5,15 +5,20 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.valentin.shop.dto.ProductDto;
 import com.valentin.shop.entities.Product;
 import com.valentin.shop.interfaces.ProductService;
+import com.valentin.shop.models.CartProduct;
+import com.valentin.shop.models.Status;
 
 @RestController
+@SessionAttributes({"cart"})
 public class ProductRest {
 
 	@Autowired
@@ -40,4 +45,11 @@ public class ProductRest {
 		
 		return productsDto;
     }
+	
+	@RequestMapping("/addProductToCart")
+    public Status addProductToCart(@RequestParam(value="productId") int productId, 
+    		@RequestParam(value="quantity") int quantity, @ModelAttribute("cart") List<CartProduct> cart) {
+		
+		return this.productService.addProductToCart(productId, quantity, cart);
+	}
 }

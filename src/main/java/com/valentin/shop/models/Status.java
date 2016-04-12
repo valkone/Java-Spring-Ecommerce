@@ -13,7 +13,7 @@ public class Status {
 		this.errors = new ArrayList<>();
 	}
 	
-	public boolean isSuccess() {
+	public boolean isSuccessful() {
 		if(errors.isEmpty()) {
 			return true;
 		}
