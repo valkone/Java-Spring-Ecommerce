@@ -1,5 +1,6 @@
 package com.valentin.shop.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -144,6 +145,32 @@ public class ProductServiceImpl implements ProductService {
 		
 		if(status.isSuccessful()) {
 			status.setSuccessMessage("Product successfully added to the cart");
+		}
+		
+		return status;
+	}
+
+	@Override
+	public Status buyProducts(List<CartProduct> cart) {
+		Status status = new Status();
+		if(cart.size() == 0) {
+			status.setError("Empty cart");
+		}
+		
+		if(status.isSuccessful()) {
+			List<Product> products = new ArrayList<>();
+			for(CartProduct product : cart) {
+				Product dbProduct = this.productDao.getProductById(product.getId());
+				if(dbProduct != null) {
+					int newQuantity = dbProduct.getQuantity() - product.getQuantity();
+					dbProduct.setQuantity(newQuantity);
+					products.add(dbProduct);
+				}
+			}
+			if(products.size() > 0) {
+				status = this.productDao.updateProducts(products);
+				cart.clear();	
+			}
 		}
 		
 		return status;

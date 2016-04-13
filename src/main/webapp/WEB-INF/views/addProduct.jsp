@@ -8,7 +8,7 @@
             <%@ include file="partial-views/aside.jsp" %>
             <div id="main-content">
                 <div id="mcontent">
-                	<c:if test="${status.isSuccess()}">
+                	<c:if test="${status.isSuccessful}">
 						<div class="success">
 							${status.getSuccessMessage()}
 						</div>

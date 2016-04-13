@@ -7,6 +7,11 @@
 	<%@ include file="partial-views/aside.jsp"%>
 	<div id="main-content">
 		<div id="mcontent">
+			<c:if test="${status.isSuccessful()}">
+				<div class="success">
+					${status.getSuccessMessage()}
+				</div>
+			</c:if>
 			<c:if test="${cart != null && cart.size() > 0}">
 				<table border="0" class="table">
 					<thead>
@@ -25,7 +30,10 @@
 							</tr>
 						</c:forEach>
 					</tbody>
-				</table>
+				</table><br />
+				<form method="POST" action="buyProduct">
+					<input type="submit" class="customButton" value="Buy" />
+				</form>
 			</c:if>
 			<c:if test="${cart == null || cart.size() == 0}">
 						There is no products

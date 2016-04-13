@@ -22,4 +22,5 @@ public interface ProductService {
 	Product getProductById(long productId);
 	List<Product> searchProducts(String title, double minPrice, double maxPrice, int quantity);
 	Status addProductToCart(int productId, int quantity, List<CartProduct> cart);
+	Status buyProducts(List<CartProduct> cart);
 }

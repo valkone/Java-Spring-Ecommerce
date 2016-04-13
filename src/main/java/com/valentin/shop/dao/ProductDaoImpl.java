@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -205,5 +206,26 @@ public class ProductDaoImpl implements ProductDao {
 		session.close();
 		
 		return products;
+	}
+
+	@Override
+	public Status updateProducts(List<Product> products) {
+		Session session = this.sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		for(Product product : products) {
+			session.update(product);
+		}
+		
+		tx.commit();
+		session.close();
+		
+		// TODO: check if commit is successfull
+		/*if(tx.getStatus().isOneOf(TransactionStatus.COMMITTED)) {
+			
+		}*/
+		
+		Status status = new Status();
+		status.setSuccessMessage("You successfully bought the products");
+		return status;
 	}
 }

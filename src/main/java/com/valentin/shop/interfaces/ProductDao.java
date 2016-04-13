@@ -20,4 +20,5 @@ public interface ProductDao {
 	ProductCategory getCategoryById(int catId);
 	Product getProductById(long productId);
 	List<Product> searchProducts(String title, double minPrice, double maxPrice, int quantity);
+	Status updateProducts(List<Product> products);
 }
