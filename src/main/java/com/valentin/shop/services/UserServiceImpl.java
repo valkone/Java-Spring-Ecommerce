@@ -2,11 +2,15 @@ package com.valentin.shop.services;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.valentin.shop.constants.MessageConstants;
 import com.valentin.shop.dto.RegisterDto;
+import com.valentin.shop.entities.Role;
 import com.valentin.shop.entities.User;
 import com.valentin.shop.interfaces.UserDao;
 import com.valentin.shop.interfaces.UserService;
@@ -65,8 +69,12 @@ public class UserServiceImpl implements UserService {
 			 */
 			String hashedPassword = this.MD5(user.getPassword());
 			user.setPassword(hashedPassword);
+			
+			Set<Role> roles = new HashSet<>();
+			Role defaultRole = this.userDao.getDefaultUserRole();
+			roles.add(defaultRole);
 
-			if(userDao.register(user)) {
+			if(userDao.register(user, roles)) {
 				status.setSuccessMessage(MessageConstants.SUCCESSFUL_REGISTRATION);
 			} else {
 				status.setError(MessageConstants.DATABASE_ERROR_MESSAGE);

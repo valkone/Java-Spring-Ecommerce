@@ -150,6 +150,7 @@ public class ProductDaoImpl implements ProductDao {
 		Session session = this.sessionFactory.openSession();
 		Criteria criteria = session.createCriteria(Product.class);
 		criteria.add(Restrictions.eq("isActive", (byte)1));
+		criteria.add(Restrictions.ge("quantity", 1));
 		criteria.addOrder(Order.desc("dateAdded"));
 		
 		ArrayList<Product> products = new ArrayList<>();
@@ -167,6 +168,8 @@ public class ProductDaoImpl implements ProductDao {
 		Session session = this.sessionFactory.openSession();
 		Criteria criteria = session.createCriteria(Product.class);
 		criteria.add(Restrictions.eq("category", category));
+		criteria.add(Restrictions.ge("quantity", 1));
+		criteria.add(Restrictions.eq("isActive", (byte)1));
 		
 		ArrayList<Product> products = new ArrayList<>();
 		
@@ -183,6 +186,9 @@ public class ProductDaoImpl implements ProductDao {
 		Session session = this.sessionFactory.openSession();
 		Criteria criteria = session.createCriteria(Product.class);
 		criteria.add(Restrictions.eq("id", productId));
+		criteria.add(Restrictions.ge("quantity", 1));
+		criteria.add(Restrictions.eq("isActive", (byte)1));
+		
 		Product product;
 		try {
 			product = (Product) criteria.list().get(0);

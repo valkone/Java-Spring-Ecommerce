@@ -23,18 +23,8 @@ public class UserDaoImpl implements UserDao {
 	
 	@Override
 	@Transactional
-	public boolean register(User user) {
+	public boolean register(User user, Set<Role> roles) {
 		try {
-			Role defaultRole = (Role) sessionFactory
-					.openSession()
-					.createCriteria(Role.class)
-					.add(Restrictions.eq("role", GeneralConstants.USER_ROLE))
-					.list()
-					.get(0);
-			
-			Set<Role> roles = new HashSet<>();
-			roles.add(defaultRole);
-			
 			Session session = sessionFactory.openSession();
 				// Save the user
 				Transaction tx = session.beginTransaction();
@@ -90,5 +80,17 @@ public class UserDaoImpl implements UserDao {
 		}
 		
 		return false;
+	}
+
+	@Override
+	public Role getDefaultUserRole() {
+		Role defaultRole = (Role) sessionFactory
+				.openSession()
+				.createCriteria(Role.class)
+				.add(Restrictions.eq("role", GeneralConstants.USER_ROLE))
+				.list()
+				.get(0);
+		
+		return defaultRole;
 	}
 }
