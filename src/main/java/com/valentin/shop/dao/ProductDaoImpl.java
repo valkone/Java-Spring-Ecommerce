@@ -11,12 +11,10 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import com.valentin.shop.constants.MessageConstants;
 import com.valentin.shop.entities.Product;
 import com.valentin.shop.entities.ProductCategory;
 import com.valentin.shop.entities.User;
 import com.valentin.shop.interfaces.ProductDao;
-import com.valentin.shop.models.Status;
 
 
 @Repository
@@ -26,20 +24,19 @@ public class ProductDaoImpl implements ProductDao {
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public Status addProduct(Product product) {
-		Status status = new Status();
-
-		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		session.save(product);
-		tx.commit();
-		session.close();
+	public boolean addProduct(Product product) {
+		try {
+			Session session = sessionFactory.openSession();
+			Transaction tx = session.beginTransaction();
+			session.save(product);
+			tx.commit();
+			session.close();
+		} catch(Exception e) {
+			// TODO: log the error
+			return false;
+		}
 		
-		String successfullMessage = String.format(MessageConstants.ADD_PRODUCT_SUCCESS,
-				product.getName(), product.getPrice(), product.getQuantity());
-		status.setSuccessMessage(successfullMessage);
-		
-		return status;
+		return true;
 	}
 
 	@Override
@@ -82,36 +79,42 @@ public class ProductDaoImpl implements ProductDao {
 				.add(Restrictions.eq("user", user))
 				.add(Restrictions.eq("id", productId));
 		
-		List<Object> products = criteria.list();
+		Product product = criteria.list().size() > 0 ? (Product)criteria.list().get(0) : null;
 		session.close();
 		
-		return products.size() == 0 ? null : (Product) products.get(0);
+		return product;
 	}
 
 	@Override
-	public Status editProduct(Product product) {
-		Session session = this.sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		session.update(product);
-		tx.commit();
-		session.close();
+	public boolean editProduct(Product product) {
+		try {
+			Session session = this.sessionFactory.openSession();
+			Transaction tx = session.beginTransaction();
+			session.update(product);
+			tx.commit();
+			session.close();
+		} catch (Exception e) {
+			// TODO: log the error
+			return false;
+		}
 		
-		Status status = new Status();
-		status.setSuccessMessage(MessageConstants.EDIT_PRODUCT_SUCCESS);
-		return status;
+		return true;
 	}
 
 	@Override
-	public Status deleteProduct(Product product) {
-		Session session = this.sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		session.update(product);
-		tx.commit();
-		session.close();
+	public boolean deleteProduct(Product product) {
+		try {
+			Session session = this.sessionFactory.openSession();
+			Transaction tx = session.beginTransaction();
+			session.update(product);
+			tx.commit();
+			session.close();
+		} catch(Exception e) {
+			// TODO: log the error
+			return false;
+		}
 		
-		Status status = new Status();
-		status.setSuccessMessage(MessageConstants.DELETE_PRODUCT_SUCCESS);
-		return status;
+		return true;
 	}
 
 	@Override
@@ -216,17 +219,20 @@ public class ProductDaoImpl implements ProductDao {
 	}
 
 	@Override
-	public Status updateProducts(List<Product> products) {
-		Session session = this.sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		for(Product product : products) {
-			session.update(product);
+	public boolean updateProducts(List<Product> products) {
+		try {
+			Session session = this.sessionFactory.openSession();
+			Transaction tx = session.beginTransaction();
+			for(Product product : products) {
+				session.update(product);
+			}
+			tx.commit();
+			session.close();
+		} catch(Exception e) {
+			// TODO: log the error
+			return false;
 		}
-		tx.commit();
-		session.close();
 		
-		Status status = new Status();
-		status.setSuccessMessage(MessageConstants.BOUGHT_PRODUCT_SUCCESS);
-		return status;
+		return true;
 	}
 }

@@ -66,7 +66,11 @@ public class UserServiceImpl implements UserService {
 			String hashedPassword = this.MD5(user.getPassword());
 			user.setPassword(hashedPassword);
 
-			return userDao.register(user);
+			if(userDao.register(user)) {
+				status.setSuccessMessage(MessageConstants.SUCCESSFUL_REGISTRATION);
+			} else {
+				status.setError(MessageConstants.DATABASE_ERROR_MESSAGE);
+			}
 		}
 
 		return status;

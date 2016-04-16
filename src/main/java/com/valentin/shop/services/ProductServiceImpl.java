@@ -30,6 +30,8 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	public Status addProduct(ProductDto productDto, User activeUser) {
+		Status status = new Status();
+		
 		ProductCategory category = this.getCategoryById(productDto.getCategory());
 		Product product = this.modelMapper.map(productDto, Product.class);
 		product.setUser(activeUser);
@@ -42,7 +44,15 @@ public class ProductServiceImpl implements ProductService {
 		product.setPictureUrl(HtmlUtils.htmlEscape(product.getPictureUrl()));
 		product.setDescription(HtmlUtils.htmlEscape(product.getDescription()));
 		
-		return this.productDao.addProduct(product);
+		if(this.productDao.addProduct(product)) {
+			String successfullMessage = String.format(MessageConstants.ADD_PRODUCT_SUCCESS,
+					product.getName(), product.getPrice(), product.getQuantity());
+			status.setSuccessMessage(successfullMessage);
+		} else {
+			status.setError(MessageConstants.DATABASE_ERROR_MESSAGE);
+		}
+		
+		return status;
 	}
 
 	@Override
@@ -61,34 +71,47 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Status editProduct(ProductDto productDto, User user) {
+		Status status = new Status();
 		Product productToUpdate = this.productDao.getUserProduct(user, productDto.getId());
 		if(productToUpdate == null) {
-			Status status = new Status();
 			status.setError(MessageConstants.INVALID_PRODUCT);
-			
-			return status;
 		}
 		
-		productToUpdate.setName(productDto.getName());
-		productToUpdate.setPrice(productDto.getPrice());
-		productToUpdate.setQuantity(productDto.getQuantity());
-		productToUpdate.setName(HtmlUtils.htmlEscape(productToUpdate.getName()));
+		if(status.isSuccessful()) {
+			productToUpdate.setName(productDto.getName());
+			productToUpdate.setPrice(productDto.getPrice());
+			productToUpdate.setQuantity(productDto.getQuantity());
+			productToUpdate.setName(HtmlUtils.htmlEscape(productToUpdate.getName()));
+			
+			if(this.productDao.editProduct(productToUpdate)) {
+				status.setSuccessMessage(MessageConstants.EDIT_PRODUCT_SUCCESS);
+			} else {
+				status.setError(MessageConstants.DATABASE_ERROR_MESSAGE);
+			}
+		}
 		
-		return this.productDao.editProduct(productToUpdate);
+		return status;
 	}
 
 	@Override
 	public Status deleteProduct(long productId, User user) {
+		Status status = new Status();
+		
 		Product product = this.productDao.getUserProduct(user, productId);
 		if(product == null) {
-			Status status = new Status();
 			status.setError(MessageConstants.INVALID_PRODUCT);
-			
-			return status;
 		}
 		
-		product.setIsActive((byte)0); // delete the product
-		return this.productDao.deleteProduct(product);
+		if(status.isSuccessful()) {
+			product.setIsActive((byte)0); // delete the product
+			if(this.productDao.deleteProduct(product)) {
+				status.setSuccessMessage(MessageConstants.DELETE_PRODUCT_SUCCESS);
+			} else {
+				status.setError(MessageConstants.DATABASE_ERROR_MESSAGE);
+			}
+		}
+		
+		return status;
 	}
 
 	@Override
@@ -179,8 +202,12 @@ public class ProductServiceImpl implements ProductService {
 				}
 			}
 			if(products.size() > 0) {
-				status = this.productDao.updateProducts(products);
-				cart.clear();	
+				if(this.productDao.updateProducts(products)) {
+					status.setSuccessMessage(MessageConstants.BOUGHT_PRODUCT_SUCCESS);
+					cart.clear();
+				} else {
+					status.setError(MessageConstants.DATABASE_ERROR_MESSAGE);
+				}
 			}
 		}
 		

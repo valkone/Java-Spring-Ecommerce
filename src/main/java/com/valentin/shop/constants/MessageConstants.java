@@ -2,6 +2,8 @@ package com.valentin.shop.constants;
 
 public class MessageConstants {
 
+	public final static String DATABASE_ERROR_MESSAGE = "Something went wrong. Send this message to administrator.";
+	
 	// Product Messages
 	// Error Messages
 	public final static String INVALID_PRODUCT = "Invalid product";
