@@ -1,13 +1,13 @@
 package com.valentin.shop.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -27,21 +27,24 @@ public class Product implements Serializable{
 	@Column(name = "PRICE")
 	private double price;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	private User user;
-	
 	@Column(name = "IS_ACTIVE")
 	private byte isActive;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	private ProductCategory category;
 	
 	@Column(name = "PICTURE_URL")
 	private String pictureUrl;
 	
 	@Column(name = "DESCRIPTION")
 	private String description;
-
+	
+	@Column(name = "DATE_ADDED")
+	private Date dateAdded;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private User user;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private ProductCategory category;
+	
 	private static final long serialVersionUID = 2;
 
 	public long getId() {
@@ -114,5 +117,13 @@ public class Product implements Serializable{
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Date getDateAdded() {
+		return dateAdded;
+	}
+
+	public void setDateAdded(Date dateAdded) {
+		this.dateAdded = dateAdded;
 	}
 }

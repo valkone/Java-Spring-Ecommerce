@@ -1,11 +1,13 @@
 package com.valentin.shop.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import com.valentin.shop.dto.ProductDto;
 import com.valentin.shop.entities.Product;
@@ -26,11 +28,19 @@ public class ProductServiceImpl implements ProductService {
 	private ModelMapper modelMapper;
 	
 	@Override
-	public Status addProduct(ProductDto productDto, User activeUser, ProductCategory category) {
+	public Status addProduct(ProductDto productDto, User activeUser) {
+		ProductCategory category = this.getCategoryById(productDto.getCategory());
 		Product product = this.modelMapper.map(productDto, Product.class);
 		product.setUser(activeUser);
 		product.setCategory(category);
 		product.setIsActive((byte)1);
+		product.setDateAdded(new Date());
+	
+		// Escaping inputs
+		product.setName(HtmlUtils.htmlEscape(product.getName()));
+		product.setPictureUrl(HtmlUtils.htmlEscape(product.getPictureUrl()));
+		product.setDescription(HtmlUtils.htmlEscape(product.getDescription()));
+		
 		return this.productDao.addProduct(product);
 	}
 
@@ -61,6 +71,7 @@ public class ProductServiceImpl implements ProductService {
 		productToUpdate.setName(productDto.getName());
 		productToUpdate.setPrice(productDto.getPrice());
 		productToUpdate.setQuantity(productDto.getQuantity());
+		productToUpdate.setName(HtmlUtils.htmlEscape(productToUpdate.getName()));
 		
 		return this.productDao.editProduct(productToUpdate);
 	}
@@ -113,7 +124,6 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Status addProductToCart(int productId, int quantity, List<CartProduct> cart) {
 		Status status = new Status();
-		// TODO: if product id is invalid getProductById should return null 
 		Product product = this.productDao.getProductById(productId);
 		if(product == null) {
 			status.setError("Invalid product id");

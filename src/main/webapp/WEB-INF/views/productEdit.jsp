@@ -20,8 +20,8 @@
 					</c:if>
 					<form method="POST" modelAttribute="product">
 						<p>Name:</p> <input type="text" name="name" value="${ product.getName() }" class="customInput" /> 
-						<p>Quantity:</p> <input type="text" name="quantity" value="${ product.getQuantity() }" class="customInput" /> <br />
-						<p>Price:</p> <input type="text" name="price" value="${ product.getPrice() }" class="customInput" /> <br />
+						<p>Quantity:</p> <input type="number" name="quantity" value="${ product.getQuantity() }" class="customInput" /> <br />
+						<p>Price:</p> <input type="number" step="0.01" name="price" value="${ product.getPrice() }" class="customInput" /> <br />
 						<br />
 						<input type="submit" class="customButton" value="Edit Product" name="customButton" />
 					</form>

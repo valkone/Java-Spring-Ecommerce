@@ -10,7 +10,7 @@ import com.valentin.shop.models.CartProduct;
 import com.valentin.shop.models.Status;
 
 public interface ProductService {
-	Status addProduct(ProductDto product, User activeUser, ProductCategory category);
+	Status addProduct(ProductDto product, User activeUser);
 	List<Product> getUserProducts(User user);
 	List<Product> getAllProducts();
 	List<Product> getProductsByCategoryId(int catId);

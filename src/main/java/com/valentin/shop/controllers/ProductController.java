@@ -32,8 +32,9 @@ public class ProductController {
 	public String myProducts(Principal principal, Model model) {
 		User activeUser = (User) ((Authentication) principal).getPrincipal();
 		List<Product> products = this.productService.getUserProducts(activeUser);
-		
 		model.addAttribute("products", products);
+		List<ProductCategory> categories = this.productService.getAllCategories();
+		model.addAttribute("categories", categories);
 		
 		return "myProducts";
 	}
@@ -50,8 +51,7 @@ public class ProductController {
 	@RequestMapping(value="addProduct", method=RequestMethod.POST)
 	public String addProduct(@ModelAttribute("product") ProductDto product, Principal principal, Model model) {
 		User activeUser = (User) ((Authentication) principal).getPrincipal();
-		ProductCategory category = this.productService.getCategoryById(product.getCategory());
-		Status status = this.productService.addProduct(product, activeUser, category);
+		Status status = this.productService.addProduct(product, activeUser);
 		model.addAttribute("status", status);
 		
 		return "addProduct";
@@ -91,11 +91,14 @@ public class ProductController {
 		Product product = this.productService.getProductById(productId);
 		model.addAttribute("product", product);
 		
-		return "product";
+		return product != null ? "product" : "redirect:/home";
 	}
 	
 	@RequestMapping(value="search", method=RequestMethod.GET)
 	public String searchView(Model model) {
+		List<ProductCategory> categories = this.productService.getAllCategories();
+		model.addAttribute("categories", categories);
+		
 		return "search";
 	}
 }

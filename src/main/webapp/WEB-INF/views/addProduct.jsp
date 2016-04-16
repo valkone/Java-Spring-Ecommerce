@@ -8,15 +8,15 @@
             <%@ include file="partial-views/aside.jsp" %>
             <div id="main-content">
                 <div id="mcontent">
-                	<c:if test="${status.isSuccessful}">
+                	<c:if test="${status.isSuccessful()}">
 						<div class="success">
 							${status.getSuccessMessage()}
 						</div>
 					</c:if>
 					<form method="POST" modelAttribute="product">
 						<p>Name:</p> <input type="text" name="name" class="customInput" /> 
-						<p>Quantity:</p> <input type="text" name="quantity" class="customInput" /> <br />
-						<p>Price:</p> <input type="text" name="price" class="customInput" /> <br />
+						<p>Quantity:</p> <input type="number" name="quantity" class="customInput" /> <br />
+						<p>Price:</p> <input type="number" step="0.01" name="price" class="customInput" /> <br />
 						<p>Category:</p>
 						<select name="category">
 							<c:forEach var="category" items="${ categories }">

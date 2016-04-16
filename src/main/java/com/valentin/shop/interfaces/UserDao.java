@@ -6,4 +6,6 @@ import com.valentin.shop.models.Status;
 public interface UserDao {
 	Status register(User registrationModel);
 	User getUserByUsername(String username);
+	boolean isUsernameExists(String username);
+	boolean isEmailExists(String email);
 }

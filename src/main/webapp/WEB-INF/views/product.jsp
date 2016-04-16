@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="com.valentin.shop.constants.GeneralConstants" %>
 
 <c:set var="pageTitle" value="Home" scope="request" />
 <%@ include file="partial-views/header.jsp" %>
@@ -20,7 +21,8 @@
             <div id="message"></div>
                 <div id="product-picture">
                     <div id="main-pic">
-                        <img src="${ product.getPictureUrl() }" />
+                        <img src="${ product.pictureUrl != null ? product.pictureUrl : 
+								GeneralConstants.DEFAULT_PICTURE_URL }" />
                     </div>
                     <!-- <div id="small-pics">
                         <div class="small-pic">
@@ -35,22 +37,22 @@
                     </div> -->
                 </div>
                 <div id="product-description">
-                    <h1>${ product.getName() }</h1>
-                    <b>Category:</b>  <span><a href="category?id=${ product.getCategory().getId() }">${ product.getCategory().getName() }</a></span>
+                    <h1>${ product.name }</h1>
+                    <b>Category:</b>  <span><a href="category?id=${ product.category.id }">${ product.category.name }</a></span>
                     <br />
                     <br />
                     <div class="hr"></div>
                     <div class="product-price" style="padding: 13px 0;font-size: 23px;">
-                        $${ product.getPrice() }
+                        $${ product.price }
                     </div>
                     <div class="hr"></div>
                     <br />
                     <div class="label">Description:</div>
                     <div id="description">
-                        ${ product.getDescription() }
+                        ${ product.description }
                     </div>
                     <div id="available">
-                        ${ product.getQuantity() } items <span>In stock</span>
+                        ${ product.quantity } items <span>In stock</span>
                     </div>
                     <div id="quantity">
                         Quantity

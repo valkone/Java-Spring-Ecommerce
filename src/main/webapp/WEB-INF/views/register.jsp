@@ -8,14 +8,14 @@
             <%@ include file="partial-views/aside.jsp" %>
             <div id="main-content">
                 <div id="mcontent">
-                	<c:if test="${status.isSuccess() == false}">
+                	<c:if test="${status.isSuccessful() == false}">
 						<div class="error">
 							<c:forEach items="${status.getErrors()}" var="status">     
 							   ${status} <br />
 							</c:forEach>
 						</div><br />
 					</c:if>
-					<c:if test="${status.isSuccess()}">
+					<c:if test="${status.isSuccessful()}">
 						<div class="success">
 							${status.getSuccessMessage()}
 						</div>

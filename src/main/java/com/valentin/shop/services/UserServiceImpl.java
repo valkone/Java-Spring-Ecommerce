@@ -24,7 +24,6 @@ public class UserServiceImpl implements UserService {
 	private ModelMapper modelMapper;
 
 	@Override
-	@Secured("isAnonymous()")
 	public Status register(RegisterDto model) {
 		Status status = new Status();
 
@@ -47,6 +46,15 @@ public class UserServiceImpl implements UserService {
 		// Simple email regex expression
 		if (!model.getEmail().matches("[a-zA-Z0-9.-]+@([a-zA-Z0-9]+.)+[a-zA-Z]+")) {
 			status.setError("Invalid email");
+		}
+		
+		// BUG HERE
+		if(this.userDao.isUsernameExists(model.getUsername())) {
+			status.setError("Username already exists.");
+		}
+		
+		if(this.userDao.isEmailExists(model.getEmail())) {
+			status.setError("Email already exists.");
 		}
 
 		if (status.isSuccessful()) {

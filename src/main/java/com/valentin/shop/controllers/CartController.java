@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.valentin.shop.entities.ProductCategory;
 import com.valentin.shop.interfaces.ProductService;
 import com.valentin.shop.models.CartProduct;
 import com.valentin.shop.models.Status;
@@ -22,7 +23,10 @@ public class CartController {
 	private ProductService productService;
 	
 	@RequestMapping(value = "/cart", method = RequestMethod.GET)
-	public String cartView() {
+	public String cartView(Model model) {
+		List<ProductCategory> categories = this.productService.getAllCategories();
+		model.addAttribute("categories", categories);
+		
 		return "cart";
 	}
 	

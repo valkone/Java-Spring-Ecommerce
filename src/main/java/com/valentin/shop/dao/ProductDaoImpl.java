@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,8 +146,8 @@ public class ProductDaoImpl implements ProductDao {
 	public List<Product> getAllProducts() {
 		Session session = this.sessionFactory.openSession();
 		Criteria criteria = session.createCriteria(Product.class);
-		//TODO: add date into products
-		//criteria.addOrder(Order.desc("date"));
+		criteria.add(Restrictions.eq("isActive", (byte)1));
+		criteria.addOrder(Order.desc("dateAdded"));
 		
 		ArrayList<Product> products = new ArrayList<>();
 		
@@ -179,7 +180,13 @@ public class ProductDaoImpl implements ProductDao {
 		Session session = this.sessionFactory.openSession();
 		Criteria criteria = session.createCriteria(Product.class);
 		criteria.add(Restrictions.eq("id", productId));
-		Product product = (Product) criteria.list().get(0);
+		Product product;
+		try {
+			product = (Product) criteria.list().get(0);
+		} catch(RuntimeException e) {
+			product = null;
+		}
+		
 		session.close();
 		
 		return product;
@@ -215,14 +222,8 @@ public class ProductDaoImpl implements ProductDao {
 		for(Product product : products) {
 			session.update(product);
 		}
-		
 		tx.commit();
 		session.close();
-		
-		// TODO: check if commit is successfull
-		/*if(tx.getStatus().isOneOf(TransactionStatus.COMMITTED)) {
-			
-		}*/
 		
 		Status status = new Status();
 		status.setSuccessMessage("You successfully bought the products");

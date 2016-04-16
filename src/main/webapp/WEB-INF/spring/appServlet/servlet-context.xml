@@ -34,7 +34,7 @@
 		<beans:property name="url"
 			value="jdbc:oracle:thin:@localhost:1521:XE" />
 		<beans:property name="username" value="Shop" />
-		<beans:property name="password" value="Shop" />
+		<beans:property name="password" value="shop" />
 	</beans:bean>
 	
 	<beans:bean id="sessionFactory"

@@ -30,54 +30,39 @@ public class UserDaoImpl implements UserDao {
 	public Status register(User user) {
 		Status status = new Status();
 		
-		// TODO: if the insert has errors, put them into status object
+		Role defaultRole = (Role) sessionFactory
+				.openSession()
+				.createCriteria(Role.class)
+				.add(Restrictions.eq("role", "ROLE_USER"))
+				.list()
+				.get(0);
 		
-		User existUsername = this.getUserByUsername(user.getUsername());
-		if(existUsername != null) {
-			status.setError("Username already exists.");
-		}
+		Set<Role> roles = new HashSet<>();
+		roles.add(defaultRole);
 		
-		Criteria existEmailCriteria = sessionFactory.openSession().createCriteria(User.class);
-		existEmailCriteria.add(Restrictions.eq("email", user.getEmail()));
-		if(existEmailCriteria.list().size() > 0) {
-			status.setError("Email already exists.");
-		}
-		
-		if(status.isSuccessful()) {
-			Role defaultRole = (Role) sessionFactory
-					.openSession()
-					.createCriteria(Role.class)
-					.add(Restrictions.eq("role", "ROLE_USER"))
-					.list()
-					.get(0);
+		Session session = sessionFactory.openSession();
+			// Save the user
+			Transaction tx = session.beginTransaction();
+				session.save(user);
+			tx.commit();
 			
-			Set<Role> roles = new HashSet<>();
-			roles.add(defaultRole);
-			
-			Session session = sessionFactory.openSession();
-				// Save the user
-				Transaction tx = session.beginTransaction();
-					session.save(user);
-				tx.commit();
-				
-				// TODO: find out why before updating it executes DELETE query
-				// Add the role into the user and update it
-				tx = session.beginTransaction();
-					User dbUser = this.getUserByUsername(user.getUsername());
-					dbUser.setRoles(roles);
-					session.update(dbUser);
-				tx.commit();
-			session.close();
+			// Add the role into the user and updates it
+			tx = session.beginTransaction();
+				User dbUser = this.getUserByUsername(user.getUsername());
+				dbUser.setRoles(roles);
+				session.update(dbUser);
+			tx.commit();
+		session.close();
 
-			status.setSuccessMessage("Successful Registration");
-		}
+		status.setSuccessMessage("Successful Registration");
 		
 		return status;
 	}
 
 	@Override
 	public User getUserByUsername(String username) {
-		Criteria criteria = sessionFactory.openSession().createCriteria(User.class);
+		Session session = sessionFactory.openSession();
+		Criteria criteria = session.createCriteria(User.class);
 		List<User> users = criteria.add(Restrictions.eq("username", username)).list();
 		
 		if(users.size() == 0) {
@@ -85,7 +70,32 @@ public class UserDaoImpl implements UserDao {
 		}
 		
 		User user = users.get(0);
+		session.close();
 		
 		return user;
+	}
+
+	@Override
+	public boolean isUsernameExists(String username) {
+		if(this.getUserByUsername(username) == null) {
+			return false;
+		}
+		
+		return true;
+	}
+
+	@Override
+	public boolean isEmailExists(String email) {
+		Session session = this.sessionFactory.openSession();
+		Criteria existEmailCriteria = session.createCriteria(User.class);
+		existEmailCriteria.add(Restrictions.eq("email", email));
+		boolean isUserExists = existEmailCriteria.list().size() > 0;
+		session.close();
+		
+		if(isUserExists) {
+			return true;
+		}
+		
+		return false;
 	}
 }

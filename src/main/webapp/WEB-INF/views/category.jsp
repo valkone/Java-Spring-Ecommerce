@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" %>
+<%@ page import="com.valentin.shop.constants.GeneralConstants" %>
 
 <c:set var="pageTitle" value="Home" scope="request" />
 <%@ include file="partial-views/header.jsp" %>
@@ -12,15 +12,16 @@
                    	
                    	<c:forEach var="product" items="${ products }">
 	                    <div class="product">
-	                        <a href="product?id=${ product.getId() }">
+	                        <a href="product?id=${ product.id }">
 	                            <div class="product-image">
-	                                <img src="images/product.jpg"/>
+	                                <img src="${ product.pictureUrl != null ? product.pictureUrl : 
+								GeneralConstants.DEFAULT_PICTURE_URL }"/>
 	                            </div>
 	                            <div class="product-name">
-	                                ${ product.getName() }
+	                                ${ product.name }
 	                            </div>
 	                            <div class="product-price">
-	                                $${ product.getPrice() }
+	                                $${ product.price }
 	                            </div>
 	                        </a>
 	                    </div>
