@@ -14,6 +14,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.valentin.shop.constants.GeneralConstants;
+import com.valentin.shop.constants.MessageConstants;
 import com.valentin.shop.entities.Role;
 import com.valentin.shop.entities.User;
 import com.valentin.shop.interfaces.UserDao;
@@ -33,7 +35,7 @@ public class UserDaoImpl implements UserDao {
 		Role defaultRole = (Role) sessionFactory
 				.openSession()
 				.createCriteria(Role.class)
-				.add(Restrictions.eq("role", "ROLE_USER"))
+				.add(Restrictions.eq("role", GeneralConstants.USER_ROLE))
 				.list()
 				.get(0);
 		
@@ -54,7 +56,7 @@ public class UserDaoImpl implements UserDao {
 			tx.commit();
 		session.close();
 
-		status.setSuccessMessage("Successful Registration");
+		status.setSuccessMessage(MessageConstants.SUCCESSFUL_REGISTRATION);
 		
 		return status;
 	}

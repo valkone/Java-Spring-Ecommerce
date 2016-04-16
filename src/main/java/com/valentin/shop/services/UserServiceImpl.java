@@ -2,12 +2,10 @@ package com.valentin.shop.services;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
-
+import com.valentin.shop.constants.MessageConstants;
 import com.valentin.shop.dto.RegisterDto;
 import com.valentin.shop.entities.User;
 import com.valentin.shop.interfaces.UserDao;
@@ -28,33 +26,33 @@ public class UserServiceImpl implements UserService {
 		Status status = new Status();
 
 		if (model.getUsername().length() < 5) {
-			status.setError("Username is too short");
+			status.setError(MessageConstants.SHORT_USERNAME);
 		}
 
 		if (!model.getUsername().matches("[a-zA-Z0-9]+")) {
-			status.setError("Special characters are not allowed in username");
+			status.setError(MessageConstants.INVALID_USERNAME_CHARACTERS);
 		}
 
 		if (model.getPassword().length() < 5) {
-			status.setError("Password is too short");
+			status.setError(MessageConstants.SHORT_PASSWORD);
 		}
 
 		if (!model.getPassword().equals(model.getPassword2())) {
-			status.setError("Passwords didn't match");
+			status.setError(MessageConstants.PASSWORDS_MISMATCH);
 		}
 
 		// Simple email regex expression
 		if (!model.getEmail().matches("[a-zA-Z0-9.-]+@([a-zA-Z0-9]+.)+[a-zA-Z]+")) {
-			status.setError("Invalid email");
+			status.setError(MessageConstants.INVALID_EMAIL);
 		}
 		
 		// BUG HERE
 		if(this.userDao.isUsernameExists(model.getUsername())) {
-			status.setError("Username already exists.");
+			status.setError(MessageConstants.EXISTING_USERNAME);
 		}
 		
 		if(this.userDao.isEmailExists(model.getEmail())) {
-			status.setError("Email already exists.");
+			status.setError(MessageConstants.EXISTING_EMAIL);
 		}
 
 		if (status.isSuccessful()) {

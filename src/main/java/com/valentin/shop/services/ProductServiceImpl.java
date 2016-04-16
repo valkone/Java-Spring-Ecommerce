@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
+import com.valentin.shop.constants.MessageConstants;
 import com.valentin.shop.dto.ProductDto;
 import com.valentin.shop.entities.Product;
 import com.valentin.shop.entities.ProductCategory;
@@ -63,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
 		Product productToUpdate = this.productDao.getUserProduct(user, productDto.getId());
 		if(productToUpdate == null) {
 			Status status = new Status();
-			status.setError("Invalid product");
+			status.setError(MessageConstants.INVALID_PRODUCT);
 			
 			return status;
 		}
@@ -81,7 +82,7 @@ public class ProductServiceImpl implements ProductService {
 		Product product = this.productDao.getUserProduct(user, productId);
 		if(product == null) {
 			Status status = new Status();
-			status.setError("Invalid product");
+			status.setError(MessageConstants.INVALID_PRODUCT);
 			
 			return status;
 		}
@@ -126,12 +127,12 @@ public class ProductServiceImpl implements ProductService {
 		Status status = new Status();
 		Product product = this.productDao.getProductById(productId);
 		if(product == null) {
-			status.setError("Invalid product id");
+			status.setError(MessageConstants.INVALID_PRODUCT);
 			return status;
 		}
 		
 		if(product.getQuantity() < quantity) {
-			status.setError("Invalid quantity");
+			status.setError(MessageConstants.INVALID_QUANTITY);
 		}
 		
 		if(status.isSuccessful()) {
@@ -145,7 +146,7 @@ public class ProductServiceImpl implements ProductService {
 					currentProduct.setQuantity(totalQuantity);
 					cart.add(currentProduct);
 				} else {
-					status.setError("Invalid quantity");
+					status.setError(MessageConstants.INVALID_QUANTITY);
 				}
 			} else {
 				cartProduct.setQuantity(quantity);
@@ -154,7 +155,7 @@ public class ProductServiceImpl implements ProductService {
 		}
 		
 		if(status.isSuccessful()) {
-			status.setSuccessMessage("Product successfully added to the cart");
+			status.setSuccessMessage(MessageConstants.PRODUCT_SUCCESS);
 		}
 		
 		return status;
@@ -164,7 +165,7 @@ public class ProductServiceImpl implements ProductService {
 	public Status buyProducts(List<CartProduct> cart) {
 		Status status = new Status();
 		if(cart.size() == 0) {
-			status.setError("Empty cart");
+			status.setError(MessageConstants.EMPTY_CART);
 		}
 		
 		if(status.isSuccessful()) {

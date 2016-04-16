@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.valentin.shop.constants.PathConstants;
 import com.valentin.shop.entities.Product;
 import com.valentin.shop.entities.ProductCategory;
 import com.valentin.shop.interfaces.ProductService;
@@ -19,7 +20,7 @@ public class CategoryController {
 	@Autowired
 	private ProductService productService;
 	
-	@RequestMapping(value = "category", method = RequestMethod.GET)
+	@RequestMapping(value = PathConstants.CATEGORY_VIEW, method = RequestMethod.GET)
 	public String categoryView(Model model, @RequestParam(value = "id") int id) {
 		List<ProductCategory> categories = this.productService.getAllCategories();
 		model.addAttribute("categories", categories);

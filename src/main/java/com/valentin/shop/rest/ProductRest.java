@@ -2,15 +2,14 @@ package com.valentin.shop.rest;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
-
+import com.valentin.shop.constants.PathConstants;
 import com.valentin.shop.dto.ProductDto;
 import com.valentin.shop.entities.Product;
 import com.valentin.shop.interfaces.ProductService;
@@ -24,7 +23,7 @@ public class ProductRest {
 	@Autowired
 	private ProductService productService;
 	
-	@RequestMapping("/productSearch")
+	@RequestMapping(value = PathConstants.PRODUCT_SEARCH_REST, method = RequestMethod.GET)
     public List<ProductDto> productSearch(@RequestParam(value="title") String title,
 			@RequestParam(value="minPrice") double minPrice,
 			@RequestParam(value="maxPrice") double maxPrice,
@@ -46,7 +45,7 @@ public class ProductRest {
 		return productsDto;
     }
 	
-	@RequestMapping("/addProductToCart")
+	@RequestMapping(value = PathConstants.ADD_PRODUCT_TO_CART_REST, method = RequestMethod.GET)
     public Status addProductToCart(@RequestParam(value="productId") int productId, 
     		@RequestParam(value="quantity") int quantity, @ModelAttribute("cart") List<CartProduct> cart) {
 		

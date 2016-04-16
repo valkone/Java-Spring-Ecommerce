@@ -1,17 +1,14 @@
 package com.valentin.shop.controllers;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.tags.HtmlEscapeTag;
 import org.springframework.web.util.HtmlUtils;
-
+import com.valentin.shop.constants.PathConstants;
 import com.valentin.shop.dto.RegisterDto;
 import com.valentin.shop.entities.ProductCategory;
 import com.valentin.shop.interfaces.ProductService;
@@ -27,7 +24,7 @@ public class UserController {
 	@Autowired
 	private ProductService productService;
 	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@RequestMapping(value = PathConstants.LOGIN_VIEW, method = RequestMethod.GET)
 	public String login(Model model) {
 		List<ProductCategory> categories = this.productService.getAllCategories();
 		model.addAttribute("categories", categories);
@@ -35,7 +32,7 @@ public class UserController {
 		return "login";
 	}
 	
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	@RequestMapping(value = PathConstants.REGISTER_VIEW, method = RequestMethod.GET)
 	public String register(Model model) {
 		List<ProductCategory> categories = this.productService.getAllCategories();
 		model.addAttribute("categories", categories);
@@ -43,7 +40,7 @@ public class UserController {
 		return "register";
 	}
 	
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	@RequestMapping(value = PathConstants.REGISTER_POST, method = RequestMethod.POST)
 	public String register(Model model, @ModelAttribute("registration") RegisterDto registrationModel) {		
 		Status status = this.userService.register(registrationModel);
 		

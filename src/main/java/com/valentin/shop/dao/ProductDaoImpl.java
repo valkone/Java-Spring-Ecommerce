@@ -9,10 +9,9 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
+import com.valentin.shop.constants.MessageConstants;
 import com.valentin.shop.entities.Product;
 import com.valentin.shop.entities.ProductCategory;
 import com.valentin.shop.entities.User;
@@ -36,7 +35,7 @@ public class ProductDaoImpl implements ProductDao {
 		tx.commit();
 		session.close();
 		
-		String successfullMessage = String.format("%s with $%s price and %s quantity successfuly added",
+		String successfullMessage = String.format(MessageConstants.ADD_PRODUCT_SUCCESS,
 				product.getName(), product.getPrice(), product.getQuantity());
 		status.setSuccessMessage(successfullMessage);
 		return status;
@@ -97,7 +96,7 @@ public class ProductDaoImpl implements ProductDao {
 		session.close();
 		
 		Status status = new Status();
-		status.setSuccessMessage("You successfuly edited your product");
+		status.setSuccessMessage(MessageConstants.EDIT_PRODUCT_SUCCESS);
 		return status;
 	}
 
@@ -110,7 +109,7 @@ public class ProductDaoImpl implements ProductDao {
 		session.close();
 		
 		Status status = new Status();
-		status.setSuccessMessage("You successfuly deleted your product");
+		status.setSuccessMessage(MessageConstants.DELETE_PRODUCT_SUCCESS);
 		return status;
 	}
 
@@ -226,7 +225,7 @@ public class ProductDaoImpl implements ProductDao {
 		session.close();
 		
 		Status status = new Status();
-		status.setSuccessMessage("You successfully bought the products");
+		status.setSuccessMessage(MessageConstants.BOUGHT_PRODUCT_SUCCESS);
 		return status;
 	}
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.valentin.shop.constants.PathConstants;
 import com.valentin.shop.entities.Product;
 import com.valentin.shop.entities.ProductCategory;
 import com.valentin.shop.interfaces.ProductService;
@@ -22,7 +23,7 @@ public class HomeController {
 	@Autowired
 	private ProductService productService;
 	
-	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	@RequestMapping(value = PathConstants.HOME_VIEW, method = RequestMethod.GET)
 	public String home(Model model) {
 		// Initialize cart session
 		if(!model.containsAttribute("cart")) {
