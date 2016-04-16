@@ -38,6 +38,7 @@ public class ProductDaoImpl implements ProductDao {
 		String successfullMessage = String.format(MessageConstants.ADD_PRODUCT_SUCCESS,
 				product.getName(), product.getPrice(), product.getQuantity());
 		status.setSuccessMessage(successfullMessage);
+		
 		return status;
 	}
 
