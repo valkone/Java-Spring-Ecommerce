@@ -11,6 +11,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.valentin.shop.constants.GeneralConstants;
 import com.valentin.shop.entities.Product;
 import com.valentin.shop.entities.ProductCategory;
 import com.valentin.shop.entities.User;
@@ -240,5 +242,20 @@ public class ProductDaoImpl implements ProductDao {
 		}
 		
 		return true;
+	}
+
+	@Override
+	public List<Product> getProductsByPage(int page) {
+		int skip = GeneralConstants.PRODUCTS_BY_PAGE * page;
+		int take = GeneralConstants.PRODUCTS_BY_PAGE;
+		Session session = this.sessionFactory.openSession();
+		Criteria criteria = session
+				.createCriteria(Product.class)
+				.setFirstResult(skip)
+				.setMaxResults(take);
+		
+		List<Product> products = criteria.list();
+		
+		return products;
 	}
 }

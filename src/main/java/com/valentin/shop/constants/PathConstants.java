@@ -30,4 +30,5 @@ public class PathConstants {
 	// ProductRest
 	public final static String PRODUCT_SEARCH_REST = "/productSearch";
 	public final static String ADD_PRODUCT_TO_CART_REST = "/addProductToCart";
+	public final static String GET_PRODUCTS_BY_PAGES = "/getProductsByPages";
 }

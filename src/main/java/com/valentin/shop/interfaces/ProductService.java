@@ -23,4 +23,5 @@ public interface ProductService {
 	List<Product> searchProducts(String title, double minPrice, double maxPrice, int quantity);
 	Status addProductToCart(int productId, int quantity, List<CartProduct> cart);
 	Status buyProducts(List<CartProduct> cart);
+	List<Product> getProductsByPage(int page);
 }

@@ -1,6 +1,5 @@
 package com.valentin.shop.dao;
 
-import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.Criteria;
 import org.hibernate.Session;

@@ -32,9 +32,6 @@ public class HomeController {
 		
 		List<ProductCategory> categories = this.productService.getAllCategories();
 		model.addAttribute("categories", categories);
-		// TODO: pagination
-		List<Product> products = this.productService.getAllProducts();
-		model.addAttribute("products", products);
 		
 		return "home";
 	}

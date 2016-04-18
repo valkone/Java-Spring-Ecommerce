@@ -2,6 +2,8 @@ package com.valentin.shop.rest;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,9 @@ public class ProductRest {
 
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	@RequestMapping(value = PathConstants.PRODUCT_SEARCH_REST, method = RequestMethod.GET)
     public List<ProductDto> productSearch(@RequestParam(value="title") String title,
@@ -50,5 +55,26 @@ public class ProductRest {
     		@RequestParam(value="quantity") int quantity, @ModelAttribute("cart") List<CartProduct> cart) {
 		
 		return this.productService.addProductToCart(productId, quantity, cart);
+	}
+	
+	@RequestMapping(value = PathConstants.GET_PRODUCTS_BY_PAGES, method = RequestMethod.GET)
+    public List<ProductDto> getProductByPages(@RequestParam(value="page") int page) {
+		page--; // first page will be 1 not 0
+		List<Product> products = this.productService.getProductsByPage(page);
+		List<ProductDto> productsDto = new ArrayList<>();
+		
+		for(Product product : products) {
+			ProductDto productDto = new ProductDto();
+			productDto.setName(product.getName());
+			productDto.setDescription(product.getDescription());
+			productDto.setPictureUrl(product.getPictureUrl());
+			productDto.setPrice(product.getPrice());
+			productDto.setId(product.getId());
+			productDto.setQuantity(product.getQuantity());
+			
+			productsDto.add(productDto);
+		}
+		
+		return productsDto;
 	}
 }

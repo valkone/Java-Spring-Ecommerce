@@ -213,4 +213,9 @@ public class ProductServiceImpl implements ProductService {
 		
 		return status;
 	}
+
+	@Override
+	public List<Product> getProductsByPage(int page) {
+		return this.productDao.getProductsByPage(page);
+	}
 }
