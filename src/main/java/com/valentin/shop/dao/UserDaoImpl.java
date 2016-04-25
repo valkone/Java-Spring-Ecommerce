@@ -38,7 +38,7 @@ public class UserDaoImpl implements UserDao {
 				tx.commit();
 			session.close();
 		} catch(Exception e) {
-			// TODO: log the message
+			// TODO: log the error
 			return false;
 		}
 		
