@@ -6,9 +6,13 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
+import com.valentin.shop.constants.GeneralConstants;
 import com.valentin.shop.constants.MessageConstants;
 import com.valentin.shop.dto.ProductDto;
 import com.valentin.shop.entities.Product;
@@ -16,6 +20,7 @@ import com.valentin.shop.entities.ProductCategory;
 import com.valentin.shop.entities.User;
 import com.valentin.shop.interfaces.ProductDao;
 import com.valentin.shop.interfaces.ProductService;
+import com.valentin.shop.interfaces.StatusInterface;
 import com.valentin.shop.models.CartProduct;
 import com.valentin.shop.models.Status;
 
@@ -28,31 +33,44 @@ public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private ModelMapper modelMapper;
 	
+	private ApplicationContext context = new ClassPathXmlApplicationContext("/beans.xml");
+	private Status status;
+	
 	@Override
 	public Status addProduct(ProductDto productDto, User activeUser) {
-		Status status = new Status();
+		this.status = (Status) this.context.getBean(GeneralConstants.STATUS_BEAN_NAME);
 		
-		ProductCategory category = this.getCategoryById(productDto.getCategory());
-		Product product = this.modelMapper.map(productDto, Product.class);
-		product.setUser(activeUser);
-		product.setCategory(category);
-		product.setIsActive((byte)1);
-		product.setDateAdded(new Date());
-	
-		// Escaping inputs
-		product.setName(HtmlUtils.htmlEscape(product.getName()));
-		product.setPictureUrl(HtmlUtils.htmlEscape(product.getPictureUrl()));
-		product.setDescription(HtmlUtils.htmlEscape(product.getDescription()));
-		
-		if(this.productDao.addProduct(product)) {
-			String successfullMessage = String.format(MessageConstants.ADD_PRODUCT_SUCCESS,
-					product.getName(), product.getPrice(), product.getQuantity());
-			status.setSuccessMessage(successfullMessage);
-		} else {
-			status.setError(MessageConstants.DATABASE_ERROR_MESSAGE);
+		if(productDto.getPrice() <= 0) {
+			this.status.setError("Invalid price");
 		}
 		
-		return status;
+		if(productDto.getQuantity() <= 0) {
+			this.status.setError("Invalid quantity");
+		}
+		
+		if(this.status.isSuccessful()) {
+			ProductCategory category = this.getCategoryById(productDto.getCategory());
+			Product product = this.modelMapper.map(productDto, Product.class);
+			product.setUser(activeUser);
+			product.setCategory(category);
+			product.setIsActive((byte)1);
+			product.setDateAdded(new Date());
+		
+			// Escaping inputs
+			product.setName(HtmlUtils.htmlEscape(product.getName()));
+			product.setPictureUrl(HtmlUtils.htmlEscape(product.getPictureUrl()));
+			product.setDescription(HtmlUtils.htmlEscape(product.getDescription()));
+			
+			if(this.productDao.addProduct(product)) {
+				String successfullMessage = String.format(MessageConstants.ADD_PRODUCT_SUCCESS,
+						product.getName(), product.getPrice(), product.getQuantity());
+				this.status.setSuccessMessage(successfullMessage);
+			} else {
+				this.status.setError(MessageConstants.DATABASE_ERROR_MESSAGE);
+			}
+		}
+		
+		return this.status;
 	}
 
 	@Override
@@ -71,47 +89,56 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Status editProduct(ProductDto productDto, User user) {
-		Status status = new Status();
-		Product productToUpdate = this.productDao.getUserProduct(user, productDto.getId());
-		if(productToUpdate == null) {
-			status.setError(MessageConstants.INVALID_PRODUCT);
+		this.status = (Status) this.context.getBean(GeneralConstants.STATUS_BEAN_NAME);
+		
+		if(productDto.getPrice() <= 0) {
+			this.status.setError("Invalid price");
 		}
 		
-		if(status.isSuccessful()) {
+		if(productDto.getQuantity() <= 0) {
+			this.status.setError("Invalid quantity");
+		}
+		
+		Product productToUpdate = this.productDao.getUserProduct(user, productDto.getId());
+		if(productToUpdate == null) {
+			this.status.setError(MessageConstants.INVALID_PRODUCT);
+		}
+		
+		if(this.status.isSuccessful()) {
 			productToUpdate.setName(productDto.getName());
 			productToUpdate.setPrice(productDto.getPrice());
 			productToUpdate.setQuantity(productDto.getQuantity());
 			productToUpdate.setName(HtmlUtils.htmlEscape(productToUpdate.getName()));
 			
 			if(this.productDao.editProduct(productToUpdate)) {
-				status.setSuccessMessage(MessageConstants.EDIT_PRODUCT_SUCCESS);
+				this.status.setSuccessMessage(MessageConstants.EDIT_PRODUCT_SUCCESS);
 			} else {
-				status.setError(MessageConstants.DATABASE_ERROR_MESSAGE);
+				this.status.setError(MessageConstants.DATABASE_ERROR_MESSAGE);
 			}
 		}
 		
-		return status;
+		return this.status;
 	}
 
 	@Override
 	public Status deleteProduct(long productId, User user) {
-		Status status = new Status();
+		this.status = (Status) this.context.getBean(GeneralConstants.STATUS_BEAN_NAME);
 		
 		Product product = this.productDao.getUserProduct(user, productId);
 		if(product == null) {
-			status.setError(MessageConstants.INVALID_PRODUCT);
+			this.status.setError(MessageConstants.INVALID_PRODUCT);
 		}
 		
-		if(status.isSuccessful()) {
+		if(this.status.isSuccessful()) {
 			product.setIsActive((byte)0); // delete the product
 			if(this.productDao.deleteProduct(product)) {
-				status.setSuccessMessage(MessageConstants.DELETE_PRODUCT_SUCCESS);
+				this.status.setSuccessMessage(MessageConstants.DELETE_PRODUCT_SUCCESS);
 			} else {
-				status.setError(MessageConstants.DATABASE_ERROR_MESSAGE);
+				this.status.setError(MessageConstants.DATABASE_ERROR_MESSAGE);
 			}
 		}
 		
-		return status;
+		return this.status;
 	}
 
 	@Override
@@ -147,18 +174,19 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Status addProductToCart(int productId, int quantity, List<CartProduct> cart) {
-		Status status = new Status();
+		this.status = (Status) this.context.getBean(GeneralConstants.STATUS_BEAN_NAME);
+		
 		Product product = this.productDao.getProductById(productId);
 		if(product == null) {
-			status.setError(MessageConstants.INVALID_PRODUCT);
-			return status;
+			this.status.setError(MessageConstants.INVALID_PRODUCT);
+			return this.status;
 		}
 		
 		if(product.getQuantity() < quantity) {
-			status.setError(MessageConstants.INVALID_QUANTITY);
+			this.status.setError(MessageConstants.INVALID_QUANTITY);
 		}
 		
-		if(status.isSuccessful()) {
+		if(this.status.isSuccessful()) {
 			CartProduct cartProduct = modelMapper.map(product, CartProduct.class);
 			if(cart.contains(cartProduct)) {
 				int productIndex = cart.indexOf(cartProduct);
@@ -169,7 +197,7 @@ public class ProductServiceImpl implements ProductService {
 					currentProduct.setQuantity(totalQuantity);
 					cart.add(currentProduct);
 				} else {
-					status.setError(MessageConstants.INVALID_QUANTITY);
+					this.status.setError(MessageConstants.INVALID_QUANTITY);
 				}
 			} else {
 				cartProduct.setQuantity(quantity);
@@ -177,21 +205,21 @@ public class ProductServiceImpl implements ProductService {
 			}
 		}
 		
-		if(status.isSuccessful()) {
-			status.setSuccessMessage(MessageConstants.PRODUCT_SUCCESS);
+		if(this.status.isSuccessful()) {
+			this.status.setSuccessMessage(MessageConstants.PRODUCT_SUCCESS);
 		}
 		
-		return status;
+		return this.status;
 	}
 
 	@Override
 	public Status buyProducts(List<CartProduct> cart) {
-		Status status = new Status();
+		this.status = (Status) this.context.getBean(GeneralConstants.STATUS_BEAN_NAME);
 		if(cart.size() == 0) {
-			status.setError(MessageConstants.EMPTY_CART);
+			this.status.setError(MessageConstants.EMPTY_CART);
 		}
 		
-		if(status.isSuccessful()) {
+		if(this.status.isSuccessful()) {
 			List<Product> products = new ArrayList<>();
 			for(CartProduct product : cart) {
 				Product dbProduct = this.productDao.getProductById(product.getId());
@@ -203,15 +231,15 @@ public class ProductServiceImpl implements ProductService {
 			}
 			if(products.size() > 0) {
 				if(this.productDao.updateProducts(products)) {
-					status.setSuccessMessage(MessageConstants.BOUGHT_PRODUCT_SUCCESS);
+					this.status.setSuccessMessage(MessageConstants.BOUGHT_PRODUCT_SUCCESS);
 					cart.clear();
 				} else {
-					status.setError(MessageConstants.DATABASE_ERROR_MESSAGE);
+					this.status.setError(MessageConstants.DATABASE_ERROR_MESSAGE);
 				}
 			}
 		}
 		
-		return status;
+		return this.status;
 	}
 
 	@Override

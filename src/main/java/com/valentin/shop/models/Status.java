@@ -1,10 +1,8 @@
 package com.valentin.shop.models;
 
 import java.util.ArrayList;
+import com.valentin.shop.interfaces.StatusInterface;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Status {
 	private ArrayList<String> errors;
 	private String successMessage;

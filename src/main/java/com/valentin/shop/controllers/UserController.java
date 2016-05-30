@@ -12,6 +12,7 @@ import com.valentin.shop.constants.PathConstants;
 import com.valentin.shop.dto.RegisterDto;
 import com.valentin.shop.entities.ProductCategory;
 import com.valentin.shop.interfaces.ProductService;
+import com.valentin.shop.interfaces.StatusInterface;
 import com.valentin.shop.interfaces.UserService;
 import com.valentin.shop.models.Status;
 

@@ -56,14 +56,13 @@
 
 		<beans:property name="packagesToScan" value="com.valentin.shop.entities" />
 	</beans:bean>
-	
 	<beans:bean id="transactionManager"
 		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 		<beans:property name="sessionFactory" ref="sessionFactory"></beans:property>
 	</beans:bean>
 	
 	<beans:bean id="modelMapper" class="org.modelmapper.ModelMapper"></beans:bean>
-	
+
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	
 </beans:beans>

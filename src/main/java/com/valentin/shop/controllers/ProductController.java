@@ -16,6 +16,7 @@ import com.valentin.shop.entities.Product;
 import com.valentin.shop.entities.ProductCategory;
 import com.valentin.shop.entities.User;
 import com.valentin.shop.interfaces.ProductService;
+import com.valentin.shop.interfaces.StatusInterface;
 import com.valentin.shop.models.Status;
 import com.valentin.shop.constants.PathConstants;
 import com.valentin.shop.dto.ProductDto;
